@@ -26,69 +26,94 @@ export function SettingsPanel({
   const t = useTranslation(language);
 
   return (
-    <Card className="p-6">
-      <h2 className="text-lg font-semibold mb-4">{t('settings')}</h2>
-      
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <Label className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+    <Card className="p-8 border-2 shadow-lg">
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
             {t('temperatureUnit')}
           </Label>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <Button
               variant={temperatureUnit === 'celsius' ? 'default' : 'outline'}
               onClick={() => onTemperatureUnitChange('celsius')}
-              className="flex-1"
+              className="h-14 text-base font-semibold"
+              size="lg"
             >
-              {t('celsius')} (°C)
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-2xl">°C</span>
+                <span className="text-xs">{t('celsius')}</span>
+              </div>
             </Button>
             <Button
               variant={temperatureUnit === 'fahrenheit' ? 'default' : 'outline'}
               onClick={() => onTemperatureUnitChange('fahrenheit')}
-              className="flex-1"
+              className="h-14 text-base font-semibold"
+              size="lg"
             >
-              {t('fahrenheit')} (°F)
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-2xl">°F</span>
+                <span className="text-xs">{t('fahrenheit')}</span>
+              </div>
             </Button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <Label className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-              {t('theme')}
-            </Label>
-            <p className="text-sm text-muted-foreground">
-              {theme === 'dark' ? t('dark') : t('light')}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Sun size={18} className={theme === 'light' ? 'text-primary' : 'text-muted-foreground'} />
-            <Switch
-              checked={theme === 'dark'}
-              onCheckedChange={(checked) => onThemeChange(checked ? 'dark' : 'light')}
-            />
-            <Moon size={18} className={theme === 'dark' ? 'text-primary' : 'text-muted-foreground'} />
+        <div className="p-5 rounded-lg bg-muted/30 border-2">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                {t('theme')}
+              </Label>
+              <p className="text-base font-semibold">
+                {theme === 'dark' ? t('dark') : t('light')}
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Sun 
+                size={24} 
+                weight="duotone"
+                className={theme === 'light' ? 'text-primary' : 'text-muted-foreground'} 
+              />
+              <Switch
+                checked={theme === 'dark'}
+                onCheckedChange={(checked) => onThemeChange(checked ? 'dark' : 'light')}
+                className="data-[state=checked]:bg-primary"
+              />
+              <Moon 
+                size={24} 
+                weight="duotone"
+                className={theme === 'dark' ? 'text-primary' : 'text-muted-foreground'} 
+              />
+            </div>
           </div>
         </div>
 
-        <div className="space-y-3">
-          <Label className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+        <div className="space-y-4">
+          <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
             {t('language')}
           </Label>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <Button
               variant={language === 'en' ? 'default' : 'outline'}
               onClick={() => onLanguageChange('en')}
-              className="flex-1"
+              className="h-14 text-base font-semibold"
+              size="lg"
             >
-              {t('english')}
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xl">🇺🇸</span>
+                <span className="text-xs">{t('english')}</span>
+              </div>
             </Button>
             <Button
               variant={language === 'pt' ? 'default' : 'outline'}
               onClick={() => onLanguageChange('pt')}
-              className="flex-1"
+              className="h-14 text-base font-semibold"
+              size="lg"
             >
-              {t('portuguese')}
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-xl">🇧🇷</span>
+                <span className="text-xs">{t('portuguese')}</span>
+              </div>
             </Button>
           </div>
         </div>

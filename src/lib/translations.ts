@@ -60,6 +60,7 @@ export const translations = {
     loadLocation: 'Load Location',
     invalidCoordinates: 'Invalid coordinates',
     close: 'Close',
+    lastUpdated: 'Last updated',
   },
   pt: {
     weatherDashboard: 'Painel do Tempo',
@@ -120,6 +121,7 @@ export const translations = {
     loadLocation: 'Carregar Localização',
     invalidCoordinates: 'Coordenadas inválidas',
     close: 'Fechar',
+    lastUpdated: 'Última atualização',
   },
 };
 

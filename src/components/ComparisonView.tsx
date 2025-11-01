@@ -4,7 +4,7 @@ import { WeatherIcon } from './WeatherIcon';
 import type { WeatherData, TemperatureUnit, Language } from '@/lib/types';
 import { formatTemp, convertTemp } from '@/lib/formatters';
 import { useTranslation } from '@/lib/translations';
-import { X } from '@phosphor-icons/react';
+import { X, Scales } from '@phosphor-icons/react';
 
 interface ComparisonViewProps {
   weatherData: WeatherData[];
@@ -18,8 +18,9 @@ export function ComparisonView({ weatherData, unit, onRemove, language }: Compar
 
   if (weatherData.length === 0) {
     return (
-      <Card className="p-8 text-center">
-        <p className="text-lg font-medium mb-2">{t('noLocationsToCompare')}</p>
+      <Card className="p-12 text-center border-2 border-dashed">
+        <Scales size={64} weight="duotone" className="text-muted-foreground mx-auto mb-4" />
+        <p className="text-xl font-semibold mb-2">{t('noLocationsToCompare')}</p>
         <p className="text-muted-foreground">
           {t('selectLocations')}
         </p>
@@ -28,21 +29,21 @@ export function ComparisonView({ weatherData, unit, onRemove, language }: Compar
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {weatherData.map((data, index) => (
-        <Card key={data.location.id} className="p-6 relative">
+        <Card key={data.location.id} className="p-6 relative border-2 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-2 right-2 h-8 w-8"
+            className="absolute top-3 right-3 h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
             onClick={() => onRemove(index)}
           >
-            <X size={16} />
+            <X size={18} weight="bold" />
           </Button>
 
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold text-lg truncate pr-8">{data.location.name}</h3>
+          <div className="space-y-5">
+            <div className="pr-8">
+              <h3 className="font-bold text-lg truncate">{data.location.name}</h3>
               {(data.location.state || data.location.country) && (
                 <p className="text-sm text-muted-foreground truncate">
                   {[data.location.state, data.location.country].filter(Boolean).join(', ')}
@@ -50,38 +51,38 @@ export function ComparisonView({ weatherData, unit, onRemove, language }: Compar
               )}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5 pb-5 border-b">
               <WeatherIcon 
                 condition={data.current.weather[0].icon} 
-                size={48} 
+                size={56} 
                 className="text-primary" 
               />
               <div>
-                <div className="text-4xl font-bold tabular-nums">
+                <div className="text-5xl font-bold tabular-nums leading-none">
                   {Math.round(convertTemp(data.current.temp, unit))}°
                 </div>
-                <p className="text-sm text-muted-foreground capitalize">
+                <p className="text-sm text-muted-foreground capitalize mt-2 leading-tight">
                   {data.current.weather[0].description}
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-2 border-t text-sm">
-              <div>
-                <p className="text-muted-foreground">{t('feelsLike')}</p>
-                <p className="font-medium">{formatTemp(data.current.feels_like, unit)}</p>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium">{t('feelsLike')}</p>
+                <p className="font-bold text-base">{formatTemp(data.current.feels_like, unit)}</p>
               </div>
-              <div>
-                <p className="text-muted-foreground">{t('humidity')}</p>
-                <p className="font-medium">{data.current.humidity}%</p>
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium">{t('humidity')}</p>
+                <p className="font-bold text-base">{data.current.humidity}%</p>
               </div>
-              <div>
-                <p className="text-muted-foreground">{t('windSpeed')}</p>
-                <p className="font-medium">{data.current.wind_speed.toFixed(1)} km/h</p>
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium">{t('windSpeed')}</p>
+                <p className="font-bold text-base">{data.current.wind_speed.toFixed(1)} km/h</p>
               </div>
-              <div>
-                <p className="text-muted-foreground">{t('uvIndex')}</p>
-                <p className="font-medium">{data.current.uvi.toFixed(1)}</p>
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium">{t('uvIndex')}</p>
+                <p className="font-bold text-base">{data.current.uvi.toFixed(1)}</p>
               </div>
             </div>
           </div>

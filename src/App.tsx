@@ -201,23 +201,35 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+      <div className="container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl">
         <div className="flex flex-col lg:flex-row gap-6">
           {!isMobile && (
-            <aside className="w-full lg:w-64 flex-shrink-0">
-              <Sidebar />
+            <aside className="w-full lg:w-72 flex-shrink-0">
+              <div className="sticky top-6">
+                <Sidebar />
+              </div>
             </aside>
           )}
 
-          <main className="flex-1 space-y-6">
-            <div className="flex flex-col gap-4">
+          <main className="flex-1 space-y-6 min-w-0">
+            <header className="space-y-4">
               <div className="flex items-center justify-between">
-                <h1 className="text-2xl md:text-3xl font-bold">{t('weatherDashboard')}</h1>
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                    {t('weatherDashboard')}
+                  </h1>
+                  {currentLocation && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {currentLocation.name}
+                      {currentLocation.country && `, ${currentLocation.country}`}
+                    </p>
+                  )}
+                </div>
                 {isMobile && (
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" size="icon">
+                      <Button variant="outline" size="icon" className="rounded-full">
                         <List size={20} />
                       </Button>
                     </SheetTrigger>
@@ -229,7 +241,7 @@ function App() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <LocationSearch
                     onLocationSelect={handleLocationSelect}
                     favorites={favorites || []}
@@ -237,55 +249,81 @@ function App() {
                     language={preferences?.language || 'en'}
                   />
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-shrink-0">
                   <Button
                     variant="outline"
                     onClick={handleGeolocation}
-                    className="flex-1 sm:flex-none"
+                    className="gap-2 flex-1 sm:flex-none"
                   >
-                    <NavigationArrow size={18} />
-                    <span className="ml-2">{t('useMyLocation')}</span>
+                    <NavigationArrow size={18} weight="bold" />
+                    {!isMobile && <span>{t('useMyLocation')}</span>}
                   </Button>
                   <Button
                     variant="outline"
                     onClick={() => setManualDialogOpen(true)}
+                    size="icon"
                   >
-                    <MapPin size={18} />
+                    <MapPin size={18} weight="bold" />
+                  </Button>
+                  <Button
+                    variant={compareMode ? 'default' : 'outline'}
+                    onClick={toggleCompareMode}
+                    size="icon"
+                    className="relative"
+                  >
+                    <Scales size={18} weight="bold" />
+                    {compareMode && compareLocations.length > 0 && (
+                      <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold">
+                        {compareLocations.length}
+                      </span>
+                    )}
                   </Button>
                 </div>
               </div>
-
-              <div className="flex gap-2">
-                <Button
-                  variant={compareMode ? 'default' : 'outline'}
-                  onClick={toggleCompareMode}
-                >
-                  <Scales size={18} />
-                  <span className="ml-2">{compareMode ? t('exitCompare') : t('compareLocations')}</span>
-                </Button>
-              </div>
-            </div>
+            </header>
 
             {isLoading && !weatherData ? (
-              <div className="flex items-center justify-center py-12">
-                <p className="text-muted-foreground">{t('loadingWeatherData')}</p>
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="animate-pulse space-y-4 w-full max-w-2xl">
+                  <div className="h-48 bg-muted rounded-xl"></div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="h-32 bg-muted rounded-lg"></div>
+                    <div className="h-32 bg-muted rounded-lg"></div>
+                    <div className="h-32 bg-muted rounded-lg"></div>
+                  </div>
+                </div>
               </div>
             ) : compareMode ? (
-              <ComparisonView
-                weatherData={compareWeatherData}
-                unit={preferences?.temperatureUnit || 'celsius'}
-                onRemove={removeComparisonLocation}
-                language={preferences?.language || 'en'}
-              />
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">{t('compareLocations')}</h2>
+                  <p className="text-sm text-muted-foreground">
+                    {compareLocations.length} / 4 {preferences?.language === 'pt' ? 'locais' : 'locations'}
+                  </p>
+                </div>
+                <ComparisonView
+                  weatherData={compareWeatherData}
+                  unit={preferences?.temperatureUnit || 'celsius'}
+                  onRemove={removeComparisonLocation}
+                  language={preferences?.language || 'en'}
+                />
+              </div>
             ) : (
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="current">{t('current')}</TabsTrigger>
-                  <TabsTrigger value="forecast">{t('forecast')}</TabsTrigger>
-                  <TabsTrigger value="settings">{t('settings')}</TabsTrigger>
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                <TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 backdrop-blur-sm">
+                  <TabsTrigger value="current" className="gap-2 data-[state=active]:shadow-sm">
+                    {t('current')}
+                  </TabsTrigger>
+                  <TabsTrigger value="forecast" className="gap-2 data-[state=active]:shadow-sm">
+                    {t('forecast')}
+                  </TabsTrigger>
+                  <TabsTrigger value="settings" className="gap-2 data-[state=active]:shadow-sm">
+                    <Gear size={16} weight="bold" />
+                    {!isMobile && t('settings')}
+                  </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="current" className="space-y-6">
+                <TabsContent value="current" className="space-y-6 mt-0">
                   {weatherData && currentLocation && (
                     <CurrentWeatherCard
                       weather={weatherData.current}
@@ -297,7 +335,7 @@ function App() {
                   )}
                 </TabsContent>
 
-                <TabsContent value="forecast" className="space-y-6">
+                <TabsContent value="forecast" className="space-y-6 mt-0">
                   {weatherData && (
                     <ForecastCards
                       forecast={weatherData.daily}
@@ -307,7 +345,7 @@ function App() {
                   )}
                 </TabsContent>
 
-                <TabsContent value="settings">
+                <TabsContent value="settings" className="mt-0">
                   <SettingsPanel
                     temperatureUnit={preferences?.temperatureUnit || 'celsius'}
                     theme={preferences?.theme || 'light'}

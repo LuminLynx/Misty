@@ -32,21 +32,24 @@ export function LocationSidebar({
   const t = useTranslation(language);
 
   return (
-    <Card className="p-4 h-full flex flex-col">
-      <div className="space-y-4 flex-1">
+    <Card className="p-5 h-full flex flex-col shadow-lg border-2">
+      <div className="space-y-6 flex-1">
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Star size={18} weight="fill" className="text-accent" />
-            <h3 className="font-semibold text-sm uppercase tracking-wide">{t('favorites')}</h3>
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b">
+            <Star size={20} weight="fill" className="text-accent" />
+            <h3 className="font-bold text-sm uppercase tracking-wider">{t('favorites')}</h3>
           </div>
           
           {favorites.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">
-              {t('noFavorites')}
-            </p>
+            <div className="text-center py-8 px-4 bg-muted/30 rounded-lg">
+              <Star size={32} weight="duotone" className="text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">
+                {t('noFavorites')}
+              </p>
+            </div>
           ) : (
-            <ScrollArea className="max-h-[200px]">
-              <div className="space-y-1">
+            <ScrollArea className="max-h-[250px] pr-2">
+              <div className="space-y-2">
                 {favorites.map((location) => (
                   <LocationItem
                     key={location.id}
@@ -62,21 +65,24 @@ export function LocationSidebar({
           )}
         </div>
 
-        <Separator />
+        <Separator className="my-4" />
 
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Clock size={18} className="text-muted-foreground" />
-            <h3 className="font-semibold text-sm uppercase tracking-wide">{t('recent')}</h3>
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b">
+            <Clock size={20} weight="bold" className="text-muted-foreground" />
+            <h3 className="font-bold text-sm uppercase tracking-wider">{t('recent')}</h3>
           </div>
           
           {recent.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">
-              {t('noRecent')}
-            </p>
+            <div className="text-center py-8 px-4 bg-muted/30 rounded-lg">
+              <Clock size={32} weight="duotone" className="text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">
+                {t('noRecent')}
+              </p>
+            </div>
           ) : (
-            <ScrollArea className="max-h-[200px]">
-              <div className="space-y-1">
+            <ScrollArea className="max-h-[250px] pr-2">
+              <div className="space-y-2">
                 {recent.map((location) => (
                   <LocationItem
                     key={location.id}
@@ -115,18 +121,27 @@ function LocationItem({
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-2 p-2 rounded-md hover:bg-muted transition-colors group',
-        isCurrent && 'bg-primary/10'
+        'flex items-center justify-between gap-2 p-3 rounded-lg transition-all group border-2',
+        isCurrent 
+          ? 'bg-primary/10 border-primary/30 shadow-sm' 
+          : 'hover:bg-muted/50 border-transparent hover:border-muted'
       )}
     >
       <button
         onClick={onSelect}
-        className="flex items-center gap-2 flex-1 min-w-0 text-left"
+        className="flex items-center gap-3 flex-1 min-w-0 text-left"
       >
-        <MapPin size={14} className="text-muted-foreground flex-shrink-0" />
+        <MapPin 
+          size={16} 
+          weight={isCurrent ? 'fill' : 'regular'}
+          className={cn(
+            'flex-shrink-0 transition-colors',
+            isCurrent ? 'text-primary' : 'text-muted-foreground'
+          )}
+        />
         <div className="flex-1 min-w-0">
           <p className={cn(
-            'text-sm font-medium truncate',
+            'text-sm font-semibold truncate',
             isCurrent && 'text-primary'
           )}>
             {location.name}
@@ -143,7 +158,7 @@ function LocationItem({
         {onToggleFavorite && (
           <button
             onClick={onToggleFavorite}
-            className="p-1 hover:text-accent transition-colors"
+            className="p-1.5 rounded-md hover:bg-accent/10 hover:text-accent transition-all"
           >
             <Star size={16} weight={isFavorite ? 'fill' : 'regular'} className={cn(isFavorite && 'text-accent')} />
           </button>
@@ -151,9 +166,9 @@ function LocationItem({
         {onRemove && (
           <button
             onClick={onRemove}
-            className="p-1 opacity-0 group-hover:opacity-100 hover:text-destructive transition-all"
+            className="p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all"
           >
-            <X size={16} />
+            <X size={16} weight="bold" />
           </button>
         )}
       </div>
