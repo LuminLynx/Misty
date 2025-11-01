@@ -2,6 +2,9 @@ const CACHE_NAME = 'weather-dashboard-v1';
 const urlsToCache = [
   '/',
   '/manifest.json',
+  '/icon-144.png',
+  '/icon-192.png',
+  '/icon-512.png',
   '/icon-192.svg',
   '/icon-512.svg'
 ];
