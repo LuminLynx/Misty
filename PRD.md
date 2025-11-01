@@ -12,6 +12,13 @@ A comprehensive weather dashboard that provides real-time weather data, extended
 
 ## Essential Features
 
+### Multi-Language Support
+- **Functionality**: Full interface translation between English and Portuguese, including all labels, buttons, weather descriptions, and user messages
+- **Purpose**: Makes the application accessible to both English and Portuguese-speaking users
+- **Trigger**: Language selection in settings panel
+- **Progression**: User selects language → All UI text updates instantly → Preference saved → Language persists across sessions
+- **Success criteria**: Complete translation coverage for all UI elements, smooth language switching without page reload
+
 ### Current Weather Display
 - **Functionality**: Shows real-time weather conditions including temperature, weather description, location name, animated weather icon, humidity, wind speed, visibility, UV index, air quality, and sunrise/sunset times
 - **Purpose**: Provides immediate weather context for decision-making
@@ -48,11 +55,11 @@ A comprehensive weather dashboard that provides real-time weather data, extended
 - **Success criteria**: Favorites and recents persist across sessions, maximum 10 recents auto-managed
 
 ### Settings & Preferences
-- **Functionality**: Toggle between Celsius/Fahrenheit, switch dark/light mode, set default location
-- **Purpose**: Personalize the experience to user preferences and regional standards
+- **Functionality**: Toggle between Celsius/Fahrenheit, switch dark/light mode, change language (English/Portuguese), set default location
+- **Purpose**: Personalize the experience to user preferences, regional standards, and language preferences
 - **Trigger**: Settings panel or quick-toggle buttons
-- **Progression**: User changes preference → Update UI immediately → Save preference → Apply to all weather displays
-- **Success criteria**: Settings persist across sessions, temperature units convert accurately, theme switches smoothly
+- **Progression**: User changes preference → Update UI immediately → Save preference → Apply to all weather displays and interface text
+- **Success criteria**: Settings persist across sessions, temperature units convert accurately, theme switches smoothly, language changes update all UI text instantly
 
 ### Severe Weather Alerts
 - **Functionality**: Display weather warnings and alerts when available for selected location
@@ -62,6 +69,7 @@ A comprehensive weather dashboard that provides real-time weather data, extended
 - **Success criteria**: Alerts appear prominently with appropriate urgency indicators
 
 ## Edge Case Handling
+- **Language Fallback**: If a translation key is missing in Portuguese, gracefully fallback to English text
 - **Invalid Location Input**: Display helpful error message with suggestion to try different search terms or use map selection
 - **API Rate Limiting**: Cache weather data for 10 minutes, show cached data with timestamp when rate limited
 - **Geolocation Denied**: Gracefully fallback to search or default location with clear explanation
