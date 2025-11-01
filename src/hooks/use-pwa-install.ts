@@ -11,33 +11,46 @@ export function usePWAInstall() {
   const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered:', registration);
-        })
-        .catch((error) => {
-          console.log('Service Worker registration failed:', error);
-        });
-    }
-
     const checkIfInstalled = () => {
-      if (window.matchMedia('(display-mode: standalone)').matches) {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isInStandaloneMode = (window.navigator as any).standalone || isStandalone;
+      
+      if (isInStandaloneMode) {
         setIsInstalled(true);
+        setIsInstallable(false);
+        return true;
       }
+      return false;
     };
 
-    checkIfInstalled();
+    if (checkIfInstalled()) {
+      return;
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js', { scope: '/' })
+          .then((registration) => {
+            console.log('Service Worker registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       const installEvent = e as BeforeInstallPromptEvent;
       setDeferredPrompt(installEvent);
       setIsInstallable(true);
+      console.log('Install prompt captured');
     };
 
     const handleAppInstalled = () => {
+      console.log('App installed');
       setIsInstalled(true);
       setIsInstallable(false);
       setDeferredPrompt(null);
@@ -54,17 +67,23 @@ export function usePWAInstall() {
 
   const promptInstall = async () => {
     if (!deferredPrompt) {
+      console.log('No install prompt available');
       return;
     }
 
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      setIsInstallable(false);
+    try {
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to install prompt: ${outcome}`);
+      
+      if (outcome === 'accepted') {
+        setIsInstallable(false);
+      }
+      
+      setDeferredPrompt(null);
+    } catch (error) {
+      console.error('Error showing install prompt:', error);
     }
-    
-    setDeferredPrompt(null);
   };
 
   return {

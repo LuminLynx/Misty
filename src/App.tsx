@@ -34,7 +34,7 @@ const DEFAULT_LOCATION: Location = {
 
 function App() {
   const isMobile = useIsMobile();
-  const { isInstallable, promptInstall } = usePWAInstall();
+  const { isInstallable, isInstalled, promptInstall } = usePWAInstall();
   const [preferences, setPreferences] = useKV<UserPreferences>('weather-preferences', {
     temperatureUnit: 'celsius',
     theme: 'dark',
@@ -494,7 +494,7 @@ function App() {
         language={preferences?.language || 'en'}
       />
 
-      {isInstallable && (
+      {isInstallable && !isInstalled && (
         <InstallPrompt
           onInstall={promptInstall}
           language={preferences?.language || 'en'}
