@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/widget_background"
+    android:gravity="center_vertical">
+
+    <!-- Location -->
+    <TextView
+        android:id="@+id/widget_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Location"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:gravity="start"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Main Temperature Display -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+
+        <!-- Weather Icon Placeholder -->
+        <ImageView
+            android:id="@+id/widget_weather_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Weather icon"
+            android:src="@drawable/ic_weather_placeholder"
+            android:layout_marginEnd="12dp" />
+
+        <!-- Temperature -->
+        <TextView
+            android:id="@+id/widget_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--°"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Condition -->
+        <TextView
+            android:id="@+id/widget_condition"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Loading..."
+            android:textSize="14sp"
+            android:textColor="#E0E0E0"
+            android:gravity="start" />
+    </LinearLayout>
+
+    <!-- Additional Info -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <!-- Feels Like -->
+        <TextView
+            android:id="@+id/widget_feels_like"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Feels like --°"
+            android:textSize="12sp"
+            android:textColor="#E0E0E0"
+            android:layout_marginBottom="2dp" />
+
+        <!-- Humidity and Wind -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/widget_humidity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Humidity: --%"
+                android:textSize="12sp"
+                android:textColor="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/widget_wind"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Wind: -- km/h"
+                android:textSize="12sp"
+                android:textColor="#E0E0E0" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Last Updated Time -->
+    <TextView
+        android:id="@+id/widget_last_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap to refresh"
+        android:textSize="10sp"
+        android:textColor="#A0A0A0"
+        android:gravity="end"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>
