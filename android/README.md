@@ -31,7 +31,6 @@ android/
 │   │       │   │   └── weather_widget_info.xml   # Widget metadata
 │   │       │   ├── drawable/
 │   │       │   │   ├── widget_background.xml     # Card background
-│   │       │   │   ├── widget_preview.xml        # Widget preview
 │   │       │   │   └── ic_weather_placeholder.xml # Weather icon
 │   │       │   └── values/
 │   │       │       └── strings.xml               # String resources

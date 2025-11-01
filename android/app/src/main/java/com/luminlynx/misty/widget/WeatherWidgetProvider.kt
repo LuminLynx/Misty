@@ -48,12 +48,12 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             val views = RemoteViews(context.packageName, R.layout.weather_widget_layout)
 
             // Set default placeholder data
-            views.setTextViewText(R.id.widget_location, "Your Location")
-            views.setTextViewText(R.id.widget_temperature, "--°")
-            views.setTextViewText(R.id.widget_condition, "Loading...")
-            views.setTextViewText(R.id.widget_feels_like, "Feels like --°")
-            views.setTextViewText(R.id.widget_humidity, "Humidity: --%")
-            views.setTextViewText(R.id.widget_wind, "Wind: -- km/h")
+            views.setTextViewText(R.id.widget_location, context.getString(R.string.widget_default_location))
+            views.setTextViewText(R.id.widget_temperature, context.getString(R.string.widget_default_temperature))
+            views.setTextViewText(R.id.widget_condition, context.getString(R.string.widget_default_condition))
+            views.setTextViewText(R.id.widget_feels_like, context.getString(R.string.widget_default_feels_like))
+            views.setTextViewText(R.id.widget_humidity, context.getString(R.string.widget_default_humidity))
+            views.setTextViewText(R.id.widget_wind, context.getString(R.string.widget_default_wind))
 
             // Set up click intent to open the main app (placeholder)
             val intent = Intent(context, WeatherWidgetProvider::class.java)
