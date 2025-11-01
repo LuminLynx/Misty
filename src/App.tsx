@@ -11,11 +11,13 @@ import { LocationSidebar } from '@/components/LocationSidebar';
 import { ManualLocationDialog } from '@/components/ManualLocationDialog';
 import { SettingsPanel } from '@/components/SettingsPanel';
 import { ComparisonView } from '@/components/ComparisonView';
+import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { getWeatherData, getCurrentPosition, getLocationByCoords, getAirQuality } from '@/lib/weatherApi';
 import type { Location, WeatherData, UserPreferences, TemperatureUnit, Theme, Language } from '@/lib/types';
 import { useTranslation } from '@/lib/translations';
 import { MapPin, NavigationArrow, List, Gear, Scales } from '@phosphor-icons/react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const DEFAULT_LOCATION: Location = {
   id: '40.7128,-74.0060',
@@ -202,41 +204,71 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+      <AnimatedBackground />
       <div className="container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl">
-        <div className="flex flex-col lg:flex-row gap-6">
+        <motion.div 
+          className="flex flex-col lg:flex-row gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
           {!isMobile && (
-            <aside className="w-full lg:w-72 flex-shrink-0">
+            <motion.aside 
+              className="w-full lg:w-72 flex-shrink-0"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <div className="sticky top-6">
                 <Sidebar />
               </div>
-            </aside>
+            </motion.aside>
           )}
 
           <main className="flex-1 space-y-6 min-w-0">
             <header className="space-y-4">
               <div className="flex items-center justify-between">
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                >
                   <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                     {t('weatherDashboard')}
                   </h1>
-                  {currentLocation && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {currentLocation.name}
-                      {currentLocation.country && `, ${currentLocation.country}`}
-                    </p>
-                  )}
-                </div>
+                  <AnimatePresence mode="wait">
+                    {currentLocation && (
+                      <motion.p 
+                        key={currentLocation.id}
+                        className="text-sm text-muted-foreground mt-1"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {currentLocation.name}
+                        {currentLocation.country && `, ${currentLocation.country}`}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
                 {isMobile && (
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button variant="outline" size="icon" className="rounded-full">
-                        <List size={20} />
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="w-80">
-                      <Sidebar />
-                    </SheetContent>
-                  </Sheet>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                  >
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button variant="outline" size="icon" className="rounded-full">
+                          <List size={20} />
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="left" className="w-80">
+                        <Sidebar />
+                      </SheetContent>
+                    </Sheet>
+                  </motion.div>
                 )}
               </div>
 
@@ -283,18 +315,42 @@ function App() {
             </header>
 
             {isLoading && !weatherData ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="animate-pulse space-y-4 w-full max-w-2xl">
-                  <div className="h-48 bg-muted rounded-xl"></div>
+              <motion.div 
+                className="flex flex-col items-center justify-center py-20"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="space-y-4 w-full max-w-2xl">
+                  <motion.div 
+                    className="h-48 bg-muted rounded-xl"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="h-32 bg-muted rounded-lg"></div>
-                    <div className="h-32 bg-muted rounded-lg"></div>
-                    <div className="h-32 bg-muted rounded-lg"></div>
+                    {[0, 1, 2].map((i) => (
+                      <motion.div 
+                        key={i}
+                        className="h-32 bg-muted rounded-lg"
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ 
+                          duration: 1.5, 
+                          repeat: Infinity,
+                          delay: i * 0.2
+                        }}
+                      />
+                    ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ) : compareMode ? (
-              <div className="space-y-4">
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4 }}
+              >
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold">{t('compareLocations')}</h2>
                   <p className="text-sm text-muted-foreground">
@@ -307,7 +363,7 @@ function App() {
                   onRemove={removeComparisonLocation}
                   language={preferences?.language || 'en'}
                 />
-              </div>
+              </motion.div>
             ) : (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                 <TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 backdrop-blur-sm">
@@ -323,42 +379,68 @@ function App() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="current" className="space-y-6 mt-0">
-                  {weatherData && currentLocation && (
-                    <CurrentWeatherCard
-                      weather={weatherData.current}
-                      locationName={currentLocation.name}
-                      unit={preferences?.temperatureUnit || 'celsius'}
-                      aqi={aqi}
-                      language={preferences?.language || 'en'}
-                    />
-                  )}
-                </TabsContent>
+                <AnimatePresence mode="wait">
+                  <TabsContent value="current" className="space-y-6 mt-0">
+                    {weatherData && currentLocation && (
+                      <motion.div
+                        key="current"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <CurrentWeatherCard
+                          weather={weatherData.current}
+                          locationName={currentLocation.name}
+                          unit={preferences?.temperatureUnit || 'celsius'}
+                          aqi={aqi}
+                          language={preferences?.language || 'en'}
+                        />
+                      </motion.div>
+                    )}
+                  </TabsContent>
 
-                <TabsContent value="forecast" className="space-y-6 mt-0">
-                  {weatherData && (
-                    <ForecastCards
-                      forecast={weatherData.daily}
-                      unit={preferences?.temperatureUnit || 'celsius'}
-                      language={preferences?.language || 'en'}
-                    />
-                  )}
-                </TabsContent>
+                  <TabsContent value="forecast" className="space-y-6 mt-0">
+                    {weatherData && (
+                      <motion.div
+                        key="forecast"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <ForecastCards
+                          forecast={weatherData.daily}
+                          unit={preferences?.temperatureUnit || 'celsius'}
+                          language={preferences?.language || 'en'}
+                        />
+                      </motion.div>
+                    )}
+                  </TabsContent>
 
-                <TabsContent value="settings" className="mt-0">
-                  <SettingsPanel
-                    temperatureUnit={preferences?.temperatureUnit || 'celsius'}
-                    theme={preferences?.theme || 'light'}
-                    language={preferences?.language || 'en'}
-                    onTemperatureUnitChange={handleTemperatureUnitChange}
-                    onThemeChange={handleThemeChange}
-                    onLanguageChange={handleLanguageChange}
-                  />
-                </TabsContent>
+                  <TabsContent value="settings" className="mt-0">
+                    <motion.div
+                      key="settings"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <SettingsPanel
+                        temperatureUnit={preferences?.temperatureUnit || 'celsius'}
+                        theme={preferences?.theme || 'light'}
+                        language={preferences?.language || 'en'}
+                        onTemperatureUnitChange={handleTemperatureUnitChange}
+                        onThemeChange={handleThemeChange}
+                        onLanguageChange={handleLanguageChange}
+                      />
+                    </motion.div>
+                  </TabsContent>
+                </AnimatePresence>
               </Tabs>
             )}
           </main>
-        </div>
+        </motion.div>
       </div>
 
       <ManualLocationDialog
