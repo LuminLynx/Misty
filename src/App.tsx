@@ -13,10 +13,13 @@ import { SettingsPanel } from '@/components/SettingsPanel';
 import { ComparisonView } from '@/components/ComparisonView';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { InstallPrompt } from '@/components/InstallPrompt';
+import { AIInsights } from '@/components/AIInsights';
+import { AIActivitySuggestions } from '@/components/AIActivitySuggestions';
+import { AIWeatherChat } from '@/components/AIWeatherChat';
 import { getWeatherData, getCurrentPosition, getLocationByCoords, getAirQuality } from '@/lib/weatherApi';
 import type { Location, WeatherData, UserPreferences, TemperatureUnit, Theme, Language } from '@/lib/types';
 import { useTranslation } from '@/lib/translations';
-import { MapPin, NavigationArrow, List, Gear, Scales } from '@phosphor-icons/react';
+import { MapPin, NavigationArrow, List, Gear, Scales, Sparkle } from '@phosphor-icons/react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -369,12 +372,16 @@ function App() {
               </motion.div>
             ) : (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                <TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 backdrop-blur-sm">
+                <TabsList className="grid w-full grid-cols-4 h-12 bg-muted/50 backdrop-blur-sm">
                   <TabsTrigger value="current" className="gap-2 data-[state=active]:shadow-sm">
                     {t('current')}
                   </TabsTrigger>
                   <TabsTrigger value="forecast" className="gap-2 data-[state=active]:shadow-sm">
                     {t('forecast')}
+                  </TabsTrigger>
+                  <TabsTrigger value="ai" className="gap-2 data-[state=active]:shadow-sm">
+                    <Sparkle size={16} weight="fill" />
+                    {!isMobile && 'AI'}
                   </TabsTrigger>
                   <TabsTrigger value="settings" className="gap-2 data-[state=active]:shadow-sm">
                     <Gear size={16} weight="bold" />
@@ -417,6 +424,40 @@ function App() {
                           unit={preferences?.temperatureUnit || 'celsius'}
                           language={preferences?.language || 'en'}
                         />
+                      </motion.div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="ai" className="space-y-6 mt-0">
+                    {weatherData && currentLocation && (
+                      <motion.div
+                        key="ai"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4 }}
+                        className="space-y-6"
+                      >
+                        <AIInsights
+                          weatherData={weatherData}
+                          locationName={currentLocation.name}
+                          unit={preferences?.temperatureUnit || 'celsius'}
+                          language={preferences?.language || 'en'}
+                        />
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          <AIActivitySuggestions
+                            weatherData={weatherData}
+                            locationName={currentLocation.name}
+                            unit={preferences?.temperatureUnit || 'celsius'}
+                            language={preferences?.language || 'en'}
+                          />
+                          <AIWeatherChat
+                            weatherData={weatherData}
+                            locationName={currentLocation.name}
+                            unit={preferences?.temperatureUnit || 'celsius'}
+                            language={preferences?.language || 'en'}
+                          />
+                        </div>
                       </motion.div>
                     )}
                   </TabsContent>

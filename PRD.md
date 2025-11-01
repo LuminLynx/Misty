@@ -75,6 +75,27 @@ A comprehensive weather dashboard that provides real-time weather data, extended
 - **Progression**: User visits app → Service worker registers → Install prompt appears → User clicks install → App added to device → Launches in standalone mode
 - **Success criteria**: App installs successfully on iOS, Android, and desktop browsers; offline functionality works with cached data; app icon appears on home screen/app drawer
 
+### AI Weather Insights
+- **Functionality**: Generates personalized weather insights using AI that summarizes current conditions, provides practical recommendations, and forecasts upcoming changes
+- **Purpose**: Transforms raw weather data into actionable, conversational insights that help users make better decisions
+- **Trigger**: Automatic generation when weather data loads, with manual refresh option
+- **Progression**: Weather data received → AI analyzes conditions and forecast → Generates 2-3 sentence insight → Displays with smooth animation → User can refresh for new perspective
+- **Success criteria**: Insights are relevant, helpful, and personalized to current weather; generated within 2-3 seconds; supports both English and Portuguese
+
+### AI Activity Suggestions
+- **Functionality**: Recommends 4 weather-appropriate activities based on current conditions, categorized by type (outdoor, indoor, exercise, relaxation, travel)
+- **Purpose**: Helps users discover activities that are ideal for current weather conditions
+- **Trigger**: User clicks generate button to get personalized activity recommendations
+- **Progression**: User requests suggestions → AI analyzes weather data → Generates 4 categorized activities with reasons → Displays with color-coded badges
+- **Success criteria**: Activities are practical and weather-appropriate; categories clearly distinguished; recommendations vary on refresh
+
+### AI Weather Chat Assistant
+- **Functionality**: Interactive chat interface where users can ask weather-related questions and get intelligent, contextual answers
+- **Purpose**: Provides conversational access to weather insights, allowing users to ask specific questions about conditions, forecasts, and planning
+- **Trigger**: User types a question in the chat interface
+- **Progression**: User enters question → AI analyzes question with weather context → Generates concise answer (2-3 sentences) → Displays in chat bubble → Conversation history persists
+- **Success criteria**: Chat provides accurate, helpful answers; conversation history saved across sessions; suggested questions help new users; supports bilingual conversations
+
 ## Edge Case Handling
 - **Language Fallback**: If a translation key is missing in Portuguese, gracefully fallback to English text
 - **Invalid Location Input**: Display helpful error message with suggestion to try different search terms or use map selection
@@ -85,6 +106,10 @@ A comprehensive weather dashboard that provides real-time weather data, extended
 - **Extreme Values**: Handle temperature extremes (-99°F to 150°F) and display appropriately without layout breaks
 - **Install Prompt Dismissed**: User can dismiss install prompt; it won't reappear in current session but will return on next visit if still installable
 - **Browser Compatibility**: PWA features gracefully degrade on browsers that don't support service workers or app installation
+- **AI Request Failures**: Display friendly error message when AI calls fail; allow retry; don't block UI
+- **AI Response Delays**: Show loading states while AI processes; timeout after 10 seconds with error message
+- **Chat History Growth**: Limit stored chat messages to prevent excessive storage usage; keep last 50 messages
+- **Empty AI Responses**: Handle cases where AI returns empty or invalid responses with fallback messages
 
 ## Design Direction
 The design should feel professional, data-focused, and trustworthy like a meteorological service interface - prioritizing clarity and readability with a minimal but polished aesthetic that lets weather data and iconography take center stage.
@@ -162,6 +187,12 @@ Subtle, purposeful motion that enhances data comprehension and provides satisfyi
   - Warning for weather alerts
   - Plus/Minus for adding/removing comparison locations
   - Download for PWA install prompt
+  - Sparkle for AI features
+  - Lightbulb for activity suggestions
+  - ChatCircleDots for AI chat
+  - Robot for AI assistant avatar
+  - User for user chat avatar
+  - PaperPlaneRight for sending messages
   
 - **Spacing**: Consistent spacing using Tailwind scale - gap-4 for card grids, gap-6 for major sections, p-6 for card padding, p-8 for main container
   
