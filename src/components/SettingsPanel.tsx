@@ -3,29 +3,36 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Sun, Moon } from '@phosphor-icons/react';
-import type { TemperatureUnit, Theme } from '@/lib/types';
+import type { TemperatureUnit, Theme, Language } from '@/lib/types';
+import { useTranslation } from '@/lib/translations';
 
 interface SettingsPanelProps {
   temperatureUnit: TemperatureUnit;
   theme: Theme;
+  language: Language;
   onTemperatureUnitChange: (unit: TemperatureUnit) => void;
   onThemeChange: (theme: Theme) => void;
+  onLanguageChange: (language: Language) => void;
 }
 
 export function SettingsPanel({
   temperatureUnit,
   theme,
+  language,
   onTemperatureUnitChange,
   onThemeChange,
+  onLanguageChange,
 }: SettingsPanelProps) {
+  const t = useTranslation(language);
+
   return (
     <Card className="p-6">
-      <h2 className="text-lg font-semibold mb-4">Settings</h2>
+      <h2 className="text-lg font-semibold mb-4">{t('settings')}</h2>
       
       <div className="space-y-6">
         <div className="space-y-3">
           <Label className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-            Temperature Unit
+            {t('temperatureUnit')}
           </Label>
           <div className="flex gap-2">
             <Button
@@ -33,14 +40,14 @@ export function SettingsPanel({
               onClick={() => onTemperatureUnitChange('celsius')}
               className="flex-1"
             >
-              Celsius (°C)
+              {t('celsius')} (°C)
             </Button>
             <Button
               variant={temperatureUnit === 'fahrenheit' ? 'default' : 'outline'}
               onClick={() => onTemperatureUnitChange('fahrenheit')}
               className="flex-1"
             >
-              Fahrenheit (°F)
+              {t('fahrenheit')} (°F)
             </Button>
           </div>
         </div>
@@ -48,10 +55,10 @@ export function SettingsPanel({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-              Theme
+              {t('theme')}
             </Label>
             <p className="text-sm text-muted-foreground">
-              {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+              {theme === 'dark' ? t('dark') : t('light')}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -61,6 +68,28 @@ export function SettingsPanel({
               onCheckedChange={(checked) => onThemeChange(checked ? 'dark' : 'light')}
             />
             <Moon size={18} className={theme === 'dark' ? 'text-primary' : 'text-muted-foreground'} />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <Label className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+            {t('language')}
+          </Label>
+          <div className="flex gap-2">
+            <Button
+              variant={language === 'en' ? 'default' : 'outline'}
+              onClick={() => onLanguageChange('en')}
+              className="flex-1"
+            >
+              {t('english')}
+            </Button>
+            <Button
+              variant={language === 'pt' ? 'default' : 'outline'}
+              onClick={() => onLanguageChange('pt')}
+              className="flex-1"
+            >
+              {t('portuguese')}
+            </Button>
           </div>
         </div>
       </div>

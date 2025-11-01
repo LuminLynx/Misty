@@ -4,20 +4,23 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MagnifyingGlass, MapPin, Star } from '@phosphor-icons/react';
 import { searchLocations } from '@/lib/weatherApi';
-import type { Location } from '@/lib/types';
+import type { Location, Language } from '@/lib/types';
+import { useTranslation } from '@/lib/translations';
 import { cn } from '@/lib/utils';
 
 interface LocationSearchProps {
   onLocationSelect: (location: Location) => void;
   favorites: Location[];
   onToggleFavorite: (location: Location) => void;
+  language: Language;
 }
 
-export function LocationSearch({ onLocationSelect, favorites, onToggleFavorite }: LocationSearchProps) {
+export function LocationSearch({ onLocationSelect, favorites, onToggleFavorite, language }: LocationSearchProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Location[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const t = useTranslation(language);
 
   useEffect(() => {
     if (query.length < 2) {
@@ -54,7 +57,7 @@ export function LocationSearch({ onLocationSelect, favorites, onToggleFavorite }
         <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
         <Input
           type="text"
-          placeholder="Search for a city..."
+          placeholder={t('searchPlaceholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query.length >= 2 && setShowResults(true)}
@@ -102,7 +105,7 @@ export function LocationSearch({ onLocationSelect, favorites, onToggleFavorite }
       {isSearching && (
         <div className="absolute top-full mt-2 w-full">
           <Card className="p-4 text-center text-sm text-muted-foreground">
-            Searching...
+            {t('loadingWeatherData')}
           </Card>
         </div>
       )}

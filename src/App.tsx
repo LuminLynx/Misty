@@ -12,7 +12,8 @@ import { ManualLocationDialog } from '@/components/ManualLocationDialog';
 import { SettingsPanel } from '@/components/SettingsPanel';
 import { ComparisonView } from '@/components/ComparisonView';
 import { getWeatherData, getCurrentPosition, getLocationByCoords, getAirQuality } from '@/lib/weatherApi';
-import type { Location, WeatherData, UserPreferences, TemperatureUnit, Theme } from '@/lib/types';
+import type { Location, WeatherData, UserPreferences, TemperatureUnit, Theme, Language } from '@/lib/types';
+import { useTranslation } from '@/lib/translations';
 import { MapPin, NavigationArrow, List, Gear, Scales } from '@phosphor-icons/react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -29,6 +30,7 @@ function App() {
   const [preferences, setPreferences] = useKV<UserPreferences>('weather-preferences', {
     temperatureUnit: 'celsius',
     theme: 'light',
+    language: 'en',
   });
   const [favorites, setFavorites] = useKV<Location[]>('weather-favorites', []);
   const [recent, setRecent] = useKV<Location[]>('weather-recent', []);
@@ -41,6 +43,8 @@ function App() {
   const [compareLocations, setCompareLocations] = useState<Location[]>([]);
   const [compareWeatherData, setCompareWeatherData] = useState<WeatherData[]>([]);
   const [activeTab, setActiveTab] = useState<string>('current');
+
+  const t = useTranslation(preferences?.language || 'en');
 
   useEffect(() => {
     if (preferences?.theme === 'dark') {
@@ -76,7 +80,7 @@ function App() {
       setAqi(aqiData);
       addToRecent(location);
     } catch (error) {
-      toast.error('Failed to load weather data. Please try again.');
+      toast.error(t('failedToLoadWeather'));
       console.error('Weather load error:', error);
     } finally {
       setIsLoading(false);
@@ -97,7 +101,7 @@ function App() {
         setCompareLocations((prev) => [...prev, location]);
         loadComparisonWeather([...compareLocations, location]);
       } else {
-        toast.error('You can compare up to 4 locations at once');
+        toast.error(t('compareUpToFour'));
       }
     } else {
       loadWeather(location);
@@ -111,7 +115,7 @@ function App() {
       const weatherResults = await Promise.all(weatherPromises);
       setCompareWeatherData(weatherResults);
     } catch (error) {
-      toast.error('Failed to load comparison data');
+      toast.error(t('failedToLoadComparison'));
       console.error('Comparison load error:', error);
     }
   };
@@ -120,10 +124,10 @@ function App() {
     setFavorites((currentFavorites = []) => {
       const isFav = currentFavorites.some((fav) => fav.id === location.id);
       if (isFav) {
-        toast.success('Removed from favorites');
+        toast.success(t('removedFromFavorites'));
         return currentFavorites.filter((fav) => fav.id !== location.id);
       } else {
-        toast.success('Added to favorites');
+        toast.success(t('addedToFavorites'));
         return [...currentFavorites, { ...location, isFavorite: true }];
       }
     });
@@ -139,24 +143,31 @@ function App() {
       const location = await getLocationByCoords(coords.lat, coords.lon);
       if (location) {
         handleLocationSelect(location);
-        toast.success('Location detected');
+        toast.success(t('locationDetected'));
       }
     } else {
-      toast.error('Unable to access your location. Please check your browser permissions.');
+      toast.error(t('unableToAccessLocation'));
     }
   };
 
   const handleTemperatureUnitChange = (unit: TemperatureUnit) => {
-    setPreferences((current = { temperatureUnit: 'celsius', theme: 'light' }) => ({ 
+    setPreferences((current = { temperatureUnit: 'celsius', theme: 'light', language: 'en' }) => ({ 
       ...current, 
       temperatureUnit: unit 
     }));
   };
 
   const handleThemeChange = (theme: Theme) => {
-    setPreferences((current = { temperatureUnit: 'celsius', theme: 'light' }) => ({ 
+    setPreferences((current = { temperatureUnit: 'celsius', theme: 'light', language: 'en' }) => ({ 
       ...current, 
       theme 
+    }));
+  };
+
+  const handleLanguageChange = (language: Language) => {
+    setPreferences((current = { temperatureUnit: 'celsius', theme: 'light', language: 'en' }) => ({ 
+      ...current, 
+      language 
     }));
   };
 
@@ -185,6 +196,7 @@ function App() {
       onLocationSelect={handleLocationSelect}
       onToggleFavorite={handleToggleFavorite}
       onRemoveRecent={handleRemoveRecent}
+      language={preferences?.language || 'en'}
     />
   );
 
@@ -201,7 +213,7 @@ function App() {
           <main className="flex-1 space-y-6">
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <h1 className="text-2xl md:text-3xl font-bold">Weather Dashboard</h1>
+                <h1 className="text-2xl md:text-3xl font-bold">{t('weatherDashboard')}</h1>
                 {isMobile && (
                   <Sheet>
                     <SheetTrigger asChild>
@@ -222,6 +234,7 @@ function App() {
                     onLocationSelect={handleLocationSelect}
                     favorites={favorites || []}
                     onToggleFavorite={handleToggleFavorite}
+                    language={preferences?.language || 'en'}
                   />
                 </div>
                 <div className="flex gap-2">
@@ -231,7 +244,7 @@ function App() {
                     className="flex-1 sm:flex-none"
                   >
                     <NavigationArrow size={18} />
-                    <span className="ml-2">Use My Location</span>
+                    <span className="ml-2">{t('useMyLocation')}</span>
                   </Button>
                   <Button
                     variant="outline"
@@ -248,27 +261,28 @@ function App() {
                   onClick={toggleCompareMode}
                 >
                   <Scales size={18} />
-                  <span className="ml-2">{compareMode ? 'Exit Compare' : 'Compare Locations'}</span>
+                  <span className="ml-2">{compareMode ? t('exitCompare') : t('compareLocations')}</span>
                 </Button>
               </div>
             </div>
 
             {isLoading && !weatherData ? (
               <div className="flex items-center justify-center py-12">
-                <p className="text-muted-foreground">Loading weather data...</p>
+                <p className="text-muted-foreground">{t('loadingWeatherData')}</p>
               </div>
             ) : compareMode ? (
               <ComparisonView
                 weatherData={compareWeatherData}
                 unit={preferences?.temperatureUnit || 'celsius'}
                 onRemove={removeComparisonLocation}
+                language={preferences?.language || 'en'}
               />
             ) : (
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="current">Current</TabsTrigger>
-                  <TabsTrigger value="forecast">Forecast</TabsTrigger>
-                  <TabsTrigger value="settings">Settings</TabsTrigger>
+                  <TabsTrigger value="current">{t('current')}</TabsTrigger>
+                  <TabsTrigger value="forecast">{t('forecast')}</TabsTrigger>
+                  <TabsTrigger value="settings">{t('settings')}</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="current" className="space-y-6">
@@ -278,6 +292,7 @@ function App() {
                       locationName={currentLocation.name}
                       unit={preferences?.temperatureUnit || 'celsius'}
                       aqi={aqi}
+                      language={preferences?.language || 'en'}
                     />
                   )}
                 </TabsContent>
@@ -287,6 +302,7 @@ function App() {
                     <ForecastCards
                       forecast={weatherData.daily}
                       unit={preferences?.temperatureUnit || 'celsius'}
+                      language={preferences?.language || 'en'}
                     />
                   )}
                 </TabsContent>
@@ -295,8 +311,10 @@ function App() {
                   <SettingsPanel
                     temperatureUnit={preferences?.temperatureUnit || 'celsius'}
                     theme={preferences?.theme || 'light'}
+                    language={preferences?.language || 'en'}
                     onTemperatureUnitChange={handleTemperatureUnitChange}
                     onThemeChange={handleThemeChange}
+                    onLanguageChange={handleLanguageChange}
                   />
                 </TabsContent>
               </Tabs>
@@ -309,6 +327,7 @@ function App() {
         open={manualDialogOpen}
         onOpenChange={setManualDialogOpen}
         onLocationSelect={handleLocationSelect}
+        language={preferences?.language || 'en'}
       />
     </div>
   );

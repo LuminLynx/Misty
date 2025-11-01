@@ -1,22 +1,26 @@
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { WeatherIcon } from './WeatherIcon';
-import type { DailyForecast, TemperatureUnit } from '@/lib/types';
+import type { DailyForecast, TemperatureUnit, Language } from '@/lib/types';
 import { formatTemp, formatDate } from '@/lib/formatters';
+import { useTranslation } from '@/lib/translations';
 
 interface ForecastCardsProps {
   forecast: DailyForecast[];
   unit: TemperatureUnit;
+  language: Language;
 }
 
-export function ForecastCards({ forecast, unit }: ForecastCardsProps) {
+export function ForecastCards({ forecast, unit, language }: ForecastCardsProps) {
+  const t = useTranslation(language);
+
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">5-Day Forecast</h2>
+      <h2 className="text-xl font-semibold">{t('forecast')}</h2>
       <ScrollArea className="w-full">
         <div className="flex gap-4 pb-4 md:grid md:grid-cols-5">
           {forecast.slice(0, 5).map((day) => (
-            <ForecastCard key={day.dt} forecast={day} unit={unit} />
+            <ForecastCard key={day.dt} forecast={day} unit={unit} language={language} />
           ))}
         </div>
       </ScrollArea>
@@ -27,15 +31,17 @@ export function ForecastCards({ forecast, unit }: ForecastCardsProps) {
 interface ForecastCardProps {
   forecast: DailyForecast;
   unit: TemperatureUnit;
+  language: Language;
 }
 
-function ForecastCard({ forecast, unit }: ForecastCardProps) {
+function ForecastCard({ forecast, unit, language }: ForecastCardProps) {
   const condition = forecast.weather[0];
+  const t = useTranslation(language);
   
   return (
     <Card className="p-4 min-w-[140px] md:min-w-0 flex flex-col items-center gap-3 hover:shadow-md transition-shadow">
       <p className="text-sm font-medium text-muted-foreground">
-        {formatDate(forecast.dt)}
+        {formatDate(forecast.dt, language)}
       </p>
       
       <WeatherIcon condition={condition.icon} size={48} className="text-primary" />
@@ -57,7 +63,7 @@ function ForecastCard({ forecast, unit }: ForecastCardProps) {
       
       {forecast.pop > 0 && (
         <p className="text-xs text-muted-foreground">
-          {Math.round(forecast.pop * 100)}% rain
+          {Math.round(forecast.pop * 100)}% {t('chanceOfRain').toLowerCase()}
         </p>
       )}
     </Card>

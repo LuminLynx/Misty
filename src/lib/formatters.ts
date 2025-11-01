@@ -1,4 +1,5 @@
-import type { TemperatureUnit } from './types';
+import type { TemperatureUnit, Language } from './types';
+import { translations } from './translations';
 
 export function convertTemp(celsius: number, unit: TemperatureUnit): number {
   if (unit === 'fahrenheit') {
@@ -13,13 +14,14 @@ export function formatTemp(celsius: number, unit: TemperatureUnit): string {
   return `${temp}${symbol}`;
 }
 
-export function getAQILevel(aqi: number): { level: string; color: string } {
-  if (aqi <= 50) return { level: 'Good', color: 'text-green-600' };
-  if (aqi <= 100) return { level: 'Moderate', color: 'text-yellow-600' };
-  if (aqi <= 150) return { level: 'Unhealthy for Sensitive Groups', color: 'text-orange-600' };
-  if (aqi <= 200) return { level: 'Unhealthy', color: 'text-red-600' };
-  if (aqi <= 300) return { level: 'Very Unhealthy', color: 'text-purple-600' };
-  return { level: 'Hazardous', color: 'text-red-900' };
+export function getAQILevel(aqi: number, language: Language = 'en'): { level: string; color: string } {
+  const t = translations[language];
+  if (aqi <= 50) return { level: t.good, color: 'text-green-600' };
+  if (aqi <= 100) return { level: t.moderate, color: 'text-yellow-600' };
+  if (aqi <= 150) return { level: t.unhealthySensitive, color: 'text-orange-600' };
+  if (aqi <= 200) return { level: t.unhealthy, color: 'text-red-600' };
+  if (aqi <= 300) return { level: t.veryUnhealthy, color: 'text-purple-600' };
+  return { level: t.hazardous, color: 'text-red-900' };
 }
 
 export function getUVILevel(uvi: number): { level: string; color: string } {
@@ -37,8 +39,16 @@ export function formatTime(timestamp: number): string {
   });
 }
 
-export function formatDate(timestamp: number): string {
-  return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+export function formatDate(timestamp: number, language: Language = 'en'): string {
+  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
+  const date = new Date(timestamp * 1000);
+  const isToday = new Date().toDateString() === date.toDateString();
+  
+  if (isToday) {
+    return translations[language].today;
+  }
+  
+  return date.toLocaleDateString(locale, {
     weekday: 'short',
     month: 'short',
     day: 'numeric',

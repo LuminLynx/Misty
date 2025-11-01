@@ -4,19 +4,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { getLocationByCoords } from '@/lib/weatherApi';
-import type { Location } from '@/lib/types';
+import type { Location, Language } from '@/lib/types';
+import { useTranslation } from '@/lib/translations';
 
 interface ManualLocationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onLocationSelect: (location: Location) => void;
+  language: Language;
 }
 
-export function ManualLocationDialog({ open, onOpenChange, onLocationSelect }: ManualLocationDialogProps) {
+export function ManualLocationDialog({ open, onOpenChange, onLocationSelect, language }: ManualLocationDialogProps) {
   const [lat, setLat] = useState('');
   const [lon, setLon] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslation(language);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,12 +29,12 @@ export function ManualLocationDialog({ open, onOpenChange, onLocationSelect }: M
     const longitude = parseFloat(lon);
 
     if (isNaN(latitude) || latitude < -90 || latitude > 90) {
-      setError('Latitude must be between -90 and 90');
+      setError(t('invalidCoordinates'));
       return;
     }
 
     if (isNaN(longitude) || longitude < -180 || longitude > 180) {
-      setError('Longitude must be between -180 and 180');
+      setError(t('invalidCoordinates'));
       return;
     }
 
@@ -45,7 +48,7 @@ export function ManualLocationDialog({ open, onOpenChange, onLocationSelect }: M
       setLat('');
       setLon('');
     } else {
-      setError('Failed to get location information');
+      setError(t('invalidCoordinates'));
     }
   };
 
@@ -53,15 +56,15 @@ export function ManualLocationDialog({ open, onOpenChange, onLocationSelect }: M
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Enter Coordinates</DialogTitle>
+          <DialogTitle>{t('manualLocation')}</DialogTitle>
           <DialogDescription>
-            Enter latitude and longitude to get weather for a specific location
+            {t('enterCoordinates')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="latitude">Latitude</Label>
+            <Label htmlFor="latitude">{t('latitude')}</Label>
             <Input
               id="latitude"
               type="number"
@@ -74,7 +77,7 @@ export function ManualLocationDialog({ open, onOpenChange, onLocationSelect }: M
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="longitude">Longitude</Label>
+            <Label htmlFor="longitude">{t('longitude')}</Label>
             <Input
               id="longitude"
               type="number"
@@ -96,10 +99,10 @@ export function ManualLocationDialog({ open, onOpenChange, onLocationSelect }: M
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Get Weather'}
+              {isLoading ? t('loadingWeatherData') : t('loadLocation')}
             </Button>
           </div>
         </form>

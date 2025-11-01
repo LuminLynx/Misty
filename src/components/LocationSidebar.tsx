@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Star, Clock, MapPin, X } from '@phosphor-icons/react';
-import type { Location } from '@/lib/types';
+import type { Location, Language } from '@/lib/types';
+import { useTranslation } from '@/lib/translations';
 import { cn } from '@/lib/utils';
 
 interface LocationSidebarProps {
@@ -13,6 +14,7 @@ interface LocationSidebarProps {
   onLocationSelect: (location: Location) => void;
   onToggleFavorite: (location: Location) => void;
   onRemoveRecent: (location: Location) => void;
+  language: Language;
 }
 
 export function LocationSidebar({
@@ -22,10 +24,12 @@ export function LocationSidebar({
   onLocationSelect,
   onToggleFavorite,
   onRemoveRecent,
+  language,
 }: LocationSidebarProps) {
   const isCurrent = (location: Location) => {
     return currentLocation?.id === location.id;
   };
+  const t = useTranslation(language);
 
   return (
     <Card className="p-4 h-full flex flex-col">
@@ -33,12 +37,12 @@ export function LocationSidebar({
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Star size={18} weight="fill" className="text-accent" />
-            <h3 className="font-semibold text-sm uppercase tracking-wide">Favorites</h3>
+            <h3 className="font-semibold text-sm uppercase tracking-wide">{t('favorites')}</h3>
           </div>
           
           {favorites.length === 0 ? (
             <p className="text-sm text-muted-foreground py-4">
-              No favorite locations yet. Star a location to save it here.
+              {t('noFavorites')}
             </p>
           ) : (
             <ScrollArea className="max-h-[200px]">
@@ -63,12 +67,12 @@ export function LocationSidebar({
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Clock size={18} className="text-muted-foreground" />
-            <h3 className="font-semibold text-sm uppercase tracking-wide">Recent</h3>
+            <h3 className="font-semibold text-sm uppercase tracking-wide">{t('recent')}</h3>
           </div>
           
           {recent.length === 0 ? (
             <p className="text-sm text-muted-foreground py-4">
-              No recent locations yet.
+              {t('noRecent')}
             </p>
           ) : (
             <ScrollArea className="max-h-[200px]">

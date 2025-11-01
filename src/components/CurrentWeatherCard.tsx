@@ -1,7 +1,8 @@
 import { Card } from '@/components/ui/card';
 import { WeatherIcon } from './WeatherIcon';
-import type { CurrentWeather, TemperatureUnit } from '@/lib/types';
+import type { CurrentWeather, TemperatureUnit, Language } from '@/lib/types';
 import { formatTemp, convertTemp, getAQILevel, getUVILevel, formatTime, getWindDirection, convertSpeed, formatVisibility } from '@/lib/formatters';
+import { useTranslation } from '@/lib/translations';
 import { ThermometerSimple, Drop, Wind, Eye, SunHorizon, Sun } from '@phosphor-icons/react';
 
 interface CurrentWeatherCardProps {
@@ -9,12 +10,15 @@ interface CurrentWeatherCardProps {
   locationName: string;
   unit: TemperatureUnit;
   aqi?: number | null;
+  language: Language;
 }
 
-export function CurrentWeatherCard({ weather, locationName, unit, aqi }: CurrentWeatherCardProps) {
+export function CurrentWeatherCard({ weather, locationName, unit, aqi, language }: CurrentWeatherCardProps) {
   const condition = weather.weather[0];
-  const aqiInfo = aqi ? getAQILevel(aqi) : null;
+  const aqiInfo = aqi ? getAQILevel(aqi, language) : null;
   const uviInfo = getUVILevel(weather.uvi);
+  const t = useTranslation(language);
+  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
   
   return (
     <Card className="p-6 md:p-8">
@@ -22,7 +26,7 @@ export function CurrentWeatherCard({ weather, locationName, unit, aqi }: Current
         <div>
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">{locationName}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {new Date(weather.dt * 1000).toLocaleString('en-US', {
+            {new Date(weather.dt * 1000).toLocaleString(locale, {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -41,7 +45,7 @@ export function CurrentWeatherCard({ weather, locationName, unit, aqi }: Current
                 {Math.round(convertTemp(weather.temp, unit))}°
               </div>
               <div className="text-lg text-muted-foreground mt-1">
-                Feels like {formatTemp(weather.feels_like, unit)}
+                {t('feelsLike')} {formatTemp(weather.feels_like, unit)}
               </div>
             </div>
           </div>
@@ -54,34 +58,34 @@ export function CurrentWeatherCard({ weather, locationName, unit, aqi }: Current
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <MetricCard
             icon={<ThermometerSimple size={20} />}
-            label="Humidity"
+            label={t('humidity')}
             value={`${weather.humidity}%`}
           />
           <MetricCard
             icon={<Wind size={20} />}
-            label="Wind"
+            label={t('windSpeed')}
             value={convertSpeed(weather.wind_speed, unit)}
             subtitle={getWindDirection(weather.wind_deg)}
           />
           <MetricCard
             icon={<Eye size={20} />}
-            label="Visibility"
+            label={t('visibility')}
             value={formatVisibility(weather.visibility, unit)}
           />
           <MetricCard
             icon={<Sun size={20} />}
-            label="UV Index"
+            label={t('uvIndex')}
             value={weather.uvi.toFixed(1)}
             subtitle={<span className={uviInfo.color}>{uviInfo.level}</span>}
           />
           <MetricCard
             icon={<SunHorizon size={20} />}
-            label="Sunrise"
+            label={t('sunrise')}
             value={formatTime(weather.sunrise)}
           />
           <MetricCard
             icon={<SunHorizon size={20} className="rotate-180" />}
-            label="Sunset"
+            label={t('sunset')}
             value={formatTime(weather.sunset)}
           />
         </div>
@@ -90,7 +94,7 @@ export function CurrentWeatherCard({ weather, locationName, unit, aqi }: Current
           <div className="pt-4 border-t">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Air Quality Index</p>
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{t('airQuality')}</p>
                 <p className="text-2xl font-semibold mt-1">{aqi}</p>
               </div>
               <div className={`text-right ${aqiInfo?.color}`}>

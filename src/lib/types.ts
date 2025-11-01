@@ -65,9 +65,11 @@ export interface WeatherData {
 
 export type TemperatureUnit = 'celsius' | 'fahrenheit';
 export type Theme = 'light' | 'dark';
+export type Language = 'en' | 'pt';
 
 export interface UserPreferences {
   temperatureUnit: TemperatureUnit;
   theme: Theme;
+  language: Language;
   defaultLocation?: Location;
 }

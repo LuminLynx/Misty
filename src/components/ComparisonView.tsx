@@ -1,22 +1,27 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { WeatherIcon } from './WeatherIcon';
-import type { WeatherData, TemperatureUnit } from '@/lib/types';
+import type { WeatherData, TemperatureUnit, Language } from '@/lib/types';
 import { formatTemp, convertTemp } from '@/lib/formatters';
+import { useTranslation } from '@/lib/translations';
 import { X } from '@phosphor-icons/react';
 
 interface ComparisonViewProps {
   weatherData: WeatherData[];
   unit: TemperatureUnit;
   onRemove: (index: number) => void;
+  language: Language;
 }
 
-export function ComparisonView({ weatherData, unit, onRemove }: ComparisonViewProps) {
+export function ComparisonView({ weatherData, unit, onRemove, language }: ComparisonViewProps) {
+  const t = useTranslation(language);
+
   if (weatherData.length === 0) {
     return (
       <Card className="p-8 text-center">
+        <p className="text-lg font-medium mb-2">{t('noLocationsToCompare')}</p>
         <p className="text-muted-foreground">
-          Select locations from your favorites or search to compare weather conditions
+          {t('selectLocations')}
         </p>
       </Card>
     );
@@ -63,19 +68,19 @@ export function ComparisonView({ weatherData, unit, onRemove }: ComparisonViewPr
 
             <div className="grid grid-cols-2 gap-3 pt-2 border-t text-sm">
               <div>
-                <p className="text-muted-foreground">Feels like</p>
+                <p className="text-muted-foreground">{t('feelsLike')}</p>
                 <p className="font-medium">{formatTemp(data.current.feels_like, unit)}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Humidity</p>
+                <p className="text-muted-foreground">{t('humidity')}</p>
                 <p className="font-medium">{data.current.humidity}%</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Wind</p>
+                <p className="text-muted-foreground">{t('windSpeed')}</p>
                 <p className="font-medium">{data.current.wind_speed.toFixed(1)} km/h</p>
               </div>
               <div>
-                <p className="text-muted-foreground">UV Index</p>
+                <p className="text-muted-foreground">{t('uvIndex')}</p>
                 <p className="font-medium">{data.current.uvi.toFixed(1)}</p>
               </div>
             </div>
