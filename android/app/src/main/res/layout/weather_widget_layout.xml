@@ -13,7 +13,7 @@
         android:id="@+id/widget_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Location"
+        android:text="@string/widget_default_location"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
@@ -42,7 +42,7 @@
             android:id="@+id/widget_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="--°"
+            android:text="@string/widget_default_temperature"
             android:textSize="36sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Loading..."
+            android:text="@string/widget_default_condition"
             android:textSize="14sp"
             android:textColor="#E0E0E0"
             android:gravity="start" />
@@ -72,7 +72,7 @@
             android:id="@+id/widget_feels_like"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Feels like --°"
+            android:text="@string/widget_default_feels_like"
             android:textSize="12sp"
             android:textColor="#E0E0E0"
             android:layout_marginBottom="2dp" />
@@ -88,7 +88,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Humidity: --%"
+                android:text="@string/widget_default_humidity"
                 android:textSize="12sp"
                 android:textColor="#E0E0E0" />
 
@@ -97,7 +97,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Wind: -- km/h"
+                android:text="@string/widget_default_wind"
                 android:textSize="12sp"
                 android:textColor="#E0E0E0" />
         </LinearLayout>
@@ -108,7 +108,7 @@
         android:id="@+id/widget_last_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tap to refresh"
+        android:text="@string/widget_tap_to_refresh"
         android:textSize="10sp"
         android:textColor="#A0A0A0"
         android:gravity="end"
