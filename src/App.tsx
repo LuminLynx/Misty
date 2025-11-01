@@ -12,11 +12,13 @@ import { ManualLocationDialog } from '@/components/ManualLocationDialog';
 import { SettingsPanel } from '@/components/SettingsPanel';
 import { ComparisonView } from '@/components/ComparisonView';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
+import { InstallPrompt } from '@/components/InstallPrompt';
 import { getWeatherData, getCurrentPosition, getLocationByCoords, getAirQuality } from '@/lib/weatherApi';
 import type { Location, WeatherData, UserPreferences, TemperatureUnit, Theme, Language } from '@/lib/types';
 import { useTranslation } from '@/lib/translations';
 import { MapPin, NavigationArrow, List, Gear, Scales } from '@phosphor-icons/react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { usePWAInstall } from '@/hooks/use-pwa-install';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const DEFAULT_LOCATION: Location = {
@@ -29,6 +31,7 @@ const DEFAULT_LOCATION: Location = {
 
 function App() {
   const isMobile = useIsMobile();
+  const { isInstallable, promptInstall } = usePWAInstall();
   const [preferences, setPreferences] = useKV<UserPreferences>('weather-preferences', {
     temperatureUnit: 'celsius',
     theme: 'dark',
@@ -449,6 +452,13 @@ function App() {
         onLocationSelect={handleLocationSelect}
         language={preferences?.language || 'en'}
       />
+
+      {isInstallable && (
+        <InstallPrompt
+          onInstall={promptInstall}
+          language={preferences?.language || 'en'}
+        />
+      )}
     </div>
   );
 }

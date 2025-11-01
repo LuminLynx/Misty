@@ -68,14 +68,23 @@ A comprehensive weather dashboard that provides real-time weather data, extended
 - **Progression**: Weather data received → Check for alerts → Display prominent alert banner → Show severity level and description
 - **Success criteria**: Alerts appear prominently with appropriate urgency indicators
 
+### Progressive Web App Installation
+- **Functionality**: Allow users to install the weather dashboard as a standalone app on their device (mobile, tablet, or desktop)
+- **Purpose**: Provides native app-like experience with offline access, home screen icon, and faster loading
+- **Trigger**: Browser detects PWA capability → Install prompt appears automatically
+- **Progression**: User visits app → Service worker registers → Install prompt appears → User clicks install → App added to device → Launches in standalone mode
+- **Success criteria**: App installs successfully on iOS, Android, and desktop browsers; offline functionality works with cached data; app icon appears on home screen/app drawer
+
 ## Edge Case Handling
 - **Language Fallback**: If a translation key is missing in Portuguese, gracefully fallback to English text
 - **Invalid Location Input**: Display helpful error message with suggestion to try different search terms or use map selection
 - **API Rate Limiting**: Cache weather data for 10 minutes, show cached data with timestamp when rate limited
 - **Geolocation Denied**: Gracefully fallback to search or default location with clear explanation
-- **Offline State**: Display last cached weather data with "offline" indicator and timestamp
+- **Offline State**: Display last cached weather data with "offline" indicator and timestamp, service worker serves cached assets
 - **Missing Weather Data**: Show placeholder or "N/A" for unavailable metrics rather than breaking layout
 - **Extreme Values**: Handle temperature extremes (-99°F to 150°F) and display appropriately without layout breaks
+- **Install Prompt Dismissed**: User can dismiss install prompt; it won't reappear in current session but will return on next visit if still installable
+- **Browser Compatibility**: PWA features gracefully degrade on browsers that don't support service workers or app installation
 
 ## Design Direction
 The design should feel professional, data-focused, and trustworthy like a meteorological service interface - prioritizing clarity and readability with a minimal but polished aesthetic that lets weather data and iconography take center stage.
@@ -152,6 +161,7 @@ Subtle, purposeful motion that enhances data comprehension and provides satisfyi
   - SunHorizon for sunrise/sunset
   - Warning for weather alerts
   - Plus/Minus for adding/removing comparison locations
+  - Download for PWA install prompt
   
 - **Spacing**: Consistent spacing using Tailwind scale - gap-4 for card grids, gap-6 for major sections, p-6 for card padding, p-8 for main container
   
