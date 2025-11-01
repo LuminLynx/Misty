@@ -28,19 +28,6 @@ export function usePWAInstall() {
       return;
     }
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/sw.js', { scope: '/' })
-          .then((registration) => {
-            console.log('Service Worker registered:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       const installEvent = e as BeforeInstallPromptEvent;
