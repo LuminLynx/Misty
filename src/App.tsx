@@ -105,7 +105,7 @@ function App() {
         console.log('Shared location request:', locationMatch[1]);
       }
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const initLocation = async () => {
