@@ -1,0 +1,8 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the Android SDK. This is configured by Android Studio.
+# For building the widget, set this to your Android SDK path.
+# Example:
+# sdk.dir=/Users/username/Library/Android/sdk
+# sdk.dir=C\:\\Users\\username\\AppData\\Local\\Android\\sdk
