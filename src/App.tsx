@@ -12,7 +12,7 @@ import { ManualLocationDialog } from '@/components/ManualLocationDialog';
 import { SettingsPanel } from '@/components/SettingsPanel';
 import { ComparisonView } from '@/components/ComparisonView';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
-import { InstallPrompt } from '@/components/InstallPrompt';
+import { UpdateNotification } from '@/components/UpdateNotification';
 import { AIInsights } from '@/components/AIInsights';
 import { AIActivitySuggestions } from '@/components/AIActivitySuggestions';
 import { AIWeatherChat } from '@/components/AIWeatherChat';
@@ -61,6 +61,51 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
   }, [preferences]);
+
+  // Handle URL parameters for shortcuts and share target
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Handle app shortcuts
+    const view = params.get('view');
+    if (view) {
+      switch (view) {
+        case 'current':
+          setActiveTab('current');
+          break;
+        case 'forecast':
+          setActiveTab('forecast');
+          break;
+        case 'compare':
+          setActiveTab('comparison');
+          setCompareMode(true);
+          break;
+        case 'ai':
+          setActiveTab('ai');
+          break;
+      }
+    }
+
+    // Handle share target
+    const sharedText = params.get('text');
+    const sharedTitle = params.get('title');
+    const sharedUrl = params.get('url');
+    
+    if (sharedText || sharedTitle || sharedUrl) {
+      const content = [sharedTitle, sharedText, sharedUrl].filter(Boolean).join(' ');
+      toast.success(t('sharedContent'), {
+        description: content.substring(0, 100),
+      });
+      
+      // Try to extract location from shared content
+      // This is a simple implementation - could be enhanced with better parsing
+      const locationMatch = content.match(/weather.*?in\s+([A-Z][a-zA-Z\s]+)/i);
+      if (locationMatch && locationMatch[1]) {
+        // Would need to implement location search based on the extracted text
+        console.log('Shared location request:', locationMatch[1]);
+      }
+    }
+  }, [t]);
 
   useEffect(() => {
     const initLocation = async () => {
@@ -500,6 +545,8 @@ function App() {
           language={preferences?.language || 'en'}
         />
       )}
+
+      <UpdateNotification />
     </div>
   );
 }

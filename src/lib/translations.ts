@@ -61,6 +61,7 @@ export const translations = {
     invalidCoordinates: 'Invalid coordinates',
     close: 'Close',
     lastUpdated: 'Last updated',
+    sharedContent: 'Shared content received',
   },
   pt: {
     weatherDashboard: 'Painel do Tempo',
@@ -122,6 +123,7 @@ export const translations = {
     invalidCoordinates: 'Coordenadas inválidas',
     close: 'Fechar',
     lastUpdated: 'Última atualização',
+    sharedContent: 'Conteúdo compartilhado recebido',
   },
 };
 
