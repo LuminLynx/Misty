@@ -31,7 +31,7 @@ function App() {
   const isMobile = useIsMobile();
   const [preferences, setPreferences] = useKV<UserPreferences>('weather-preferences', {
     temperatureUnit: 'celsius',
-    theme: 'light',
+    theme: 'dark',
     language: 'en',
   });
   const [favorites, setFavorites] = useKV<Location[]>('weather-favorites', []);
