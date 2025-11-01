@@ -204,7 +204,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
-      <AnimatedBackground />
+      <AnimatedBackground weatherCondition={weatherData?.current?.weather?.[0]?.main} />
       <div className="container mx-auto p-4 md:p-6 lg:p-8 max-w-7xl">
         <motion.div 
           className="flex flex-col lg:flex-row gap-6"
