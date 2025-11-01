@@ -13,6 +13,7 @@ import { SettingsPanel } from '@/components/SettingsPanel';
 import { ComparisonView } from '@/components/ComparisonView';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { UpdateNotification } from '@/components/UpdateNotification';
+import { InstallPrompt } from '@/components/InstallPrompt';
 import { AIInsights } from '@/components/AIInsights';
 import { AIActivitySuggestions } from '@/components/AIActivitySuggestions';
 import { AIWeatherChat } from '@/components/AIWeatherChat';
