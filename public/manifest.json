@@ -1,64 +1,64 @@
 {
-  "name": "Weather Dashboard",
-  "short_name": "Weather",
+  "name": "Misty",
+  "short_name": "Misty",
   "description": "Beautiful weather dashboard with forecasts and location comparison",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/Misty/",
+  "scope": "/Misty/",
   "display": "standalone",
   "background_color": "#fafbfd",
   "theme_color": "#7ea8c4",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icon-120.png",
+      "src": "/Misty/icon-120.png",
       "sizes": "120x120",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-144.png",
+      "src": "/Misty/icon-144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-152.png",
+      "src": "/Misty/icon-152.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-167.png",
+      "src": "/Misty/icon-167.png",
       "sizes": "167x167",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-180.png",
+      "src": "/Misty/icon-180.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-192.png",
+      "src": "/Misty/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/Misty/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-192.svg",
+      "src": "/Misty/icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/icon-512.svg",
+      "src": "/Misty/icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any"
@@ -67,25 +67,25 @@
   "categories": ["weather", "utilities"],
   "screenshots": [
     {
-      "src": "/screenshot-narrow-1.png",
+      "src": "/Misty/screenshot-narrow-1.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Weather Dashboard - Main view with current conditions"
+      "label": "Misty - Main view with current conditions"
     },
     {
-      "src": "/screenshot-narrow-2.png",
+      "src": "/Misty/screenshot-narrow-2.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Weather Dashboard - 5-day forecast view"
+      "label": "Misty - 5-day forecast view"
     },
     {
-      "src": "/screenshot-wide-1.png",
+      "src": "/Misty/screenshot-wide-1.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Weather Dashboard - Desktop view"
+      "label": "Misty - Desktop view"
     }
   ],
   "shortcuts": [
@@ -93,10 +93,10 @@
       "name": "Current Weather",
       "short_name": "Current",
       "description": "View current weather conditions",
-      "url": "/?view=current",
+      "url": "/Misty/?view=current",
       "icons": [
         {
-          "src": "/icon-192.png",
+          "src": "/Misty/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -106,10 +106,10 @@
       "name": "5-Day Forecast",
       "short_name": "Forecast",
       "description": "View 5-day weather forecast",
-      "url": "/?view=forecast",
+      "url": "/Misty/?view=forecast",
       "icons": [
         {
-          "src": "/icon-192.png",
+          "src": "/Misty/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -119,10 +119,10 @@
       "name": "Compare Locations",
       "short_name": "Compare",
       "description": "Compare weather across locations",
-      "url": "/?view=compare",
+      "url": "/Misty/?view=compare",
       "icons": [
         {
-          "src": "/icon-192.png",
+          "src": "/Misty/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -132,10 +132,10 @@
       "name": "AI Insights",
       "short_name": "AI",
       "description": "Get AI weather insights",
-      "url": "/?view=ai",
+      "url": "/Misty/?view=ai",
       "icons": [
         {
-          "src": "/icon-192.png",
+          "src": "/Misty/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -143,7 +143,7 @@
     }
   ],
   "share_target": {
-    "action": "/",
+    "action": "/Misty/",
     "method": "GET",
     "enctype": "application/x-www-form-urlencoded",
     "params": {

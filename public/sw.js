@@ -1,20 +1,21 @@
 const CACHE_NAME = 'weather-dashboard-v2';
 const RUNTIME_CACHE = 'weather-runtime-v2';
+const BASE_PATH = '/Misty';
 const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/icon-120.png',
-  '/icon-144.png',
-  '/icon-152.png',
-  '/icon-167.png',
-  '/icon-180.png',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/icon-192.svg',
-  '/icon-512.svg',
-  '/screenshot-narrow-1.png',
-  '/screenshot-narrow-2.png',
-  '/screenshot-wide-1.png'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/manifest.json`,
+  `${BASE_PATH}/icon-120.png`,
+  `${BASE_PATH}/icon-144.png`,
+  `${BASE_PATH}/icon-152.png`,
+  `${BASE_PATH}/icon-167.png`,
+  `${BASE_PATH}/icon-180.png`,
+  `${BASE_PATH}/icon-192.png`,
+  `${BASE_PATH}/icon-512.png`,
+  `${BASE_PATH}/icon-192.svg`,
+  `${BASE_PATH}/icon-512.svg`,
+  `${BASE_PATH}/screenshot-narrow-1.png`,
+  `${BASE_PATH}/screenshot-narrow-2.png`,
+  `${BASE_PATH}/screenshot-wide-1.png`
 ];
 
 // Install event - cache static assets
