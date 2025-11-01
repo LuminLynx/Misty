@@ -41,9 +41,18 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
   // Skip external API calls - always try network for fresh data
-  if (url.hostname.includes('open-meteo.com') || 
-      url.hostname.includes('github.com') ||
-      url.pathname.includes('/api/')) {
+  // Use exact hostname matching to prevent URL substring bypass attacks
+  const isExternalAPI = url.hostname === 'open-meteo.com' || 
+                        url.hostname.endsWith('.open-meteo.com') ||
+                        url.hostname === 'api.open-meteo.com' ||
+                        url.hostname === 'geocoding-api.open-meteo.com' ||
+                        url.hostname === 'air-quality-api.open-meteo.com' ||
+                        url.hostname === 'github.com' || 
+                        url.hostname.endsWith('.github.com');
+  
+  const isAPIPath = url.pathname.startsWith('/api/');
+  
+  if (isExternalAPI || isAPIPath) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
