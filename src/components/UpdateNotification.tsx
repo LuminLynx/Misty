@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowClockwise, X } from '@phosphor-icons/react';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 export function UpdateNotification() {
   const [showUpdate, setShowUpdate] = useState(false);
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
+  const refreshingRef = useRef(false);
 
   useEffect(() => {
     if (!('serviceWorker' in navigator)) {
@@ -24,7 +25,16 @@ export function UpdateNotification() {
       }
     };
 
+    // Handle controller change for reload
+    const handleControllerChange = () => {
+      if (!refreshingRef.current) {
+        refreshingRef.current = true;
+        window.location.reload();
+      }
+    };
+
     navigator.serviceWorker.addEventListener('message', handleMessage);
+    navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange);
 
     // Check for existing service worker registration
     navigator.serviceWorker.getRegistration().then((reg) => {
@@ -61,6 +71,7 @@ export function UpdateNotification() {
 
     return () => {
       navigator.serviceWorker.removeEventListener('message', handleMessage);
+      navigator.serviceWorker.removeEventListener('controllerchange', handleControllerChange);
       clearInterval(interval);
     };
   }, []);
@@ -69,9 +80,7 @@ export function UpdateNotification() {
     if (registration && registration.waiting) {
       // Tell the service worker to skip waiting
       registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-      
-      // Reload the page to activate the new service worker
-      window.location.reload();
+      // The controllerchange listener set up in useEffect will handle the reload
     }
   };
 

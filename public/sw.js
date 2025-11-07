@@ -111,7 +111,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Activate event - clean up old caches and notify clients of updates
+// Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -121,16 +121,7 @@ self.addEventListener('activate', (event) => {
           .filter((cacheName) => cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE)
           .map((cacheName) => caches.delete(cacheName)),
         // Take control of all clients
-        self.clients.claim(),
-        // Notify all clients that a new version is available
-        self.clients.matchAll().then((clients) => {
-          clients.forEach((client) => {
-            client.postMessage({
-              type: 'SW_UPDATE_AVAILABLE',
-              version: CACHE_NAME
-            });
-          });
-        })
+        self.clients.claim()
       ]);
     })
   );

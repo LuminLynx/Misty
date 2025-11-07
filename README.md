@@ -2,6 +2,23 @@
 
 A comprehensive, modern weather dashboard web application built with React, TypeScript, and Tailwind CSS. Get real-time weather data, extended forecasts, and rich location selection features with an elegant, data-focused interface.
 
+## 🌐 Live Demo
+
+**Access the app at:** [https://luminlynx.github.io/Misty/](https://luminlynx.github.io/Misty/)
+
+> **Note:** The URL is case-sensitive. Make sure to use capital 'M' in 'Misty' for correct access.
+
+### 📱 PWA Installation
+
+This app is a Progressive Web App (PWA) and can be installed on your device for a native app-like experience!
+
+**For detailed installation instructions and troubleshooting, see:** [PWA Installation Guide](PWA_INSTALLATION_GUIDE.md)
+
+**Quick Install:**
+- **Desktop:** Look for the install icon (⊕) in your browser's address bar
+- **Android:** Tap menu (⋮) → "Install app" or "Add to Home screen"
+- **iOS:** Tap Share (⬆) → "Add to Home Screen"
+
 ## Features
 
 ### Current Weather Display
