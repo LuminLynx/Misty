@@ -51,7 +51,7 @@ class WeatherWidgetProvider : AppWidgetProvider() {
                 }
                 
                 // Use FLAG_IMMUTABLE for Android 6.0+ (API 23+) for better security
-                // Required for Android 12+ (API 31+)
+                // FLAG_IMMUTABLE is required for Android 12+ (API 31+) but supported since API 23
                 val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 } else {

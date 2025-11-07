@@ -59,11 +59,16 @@ These attributes ensure the widget properly declares its resize capabilities and
 
 **Code Improvements:**
 ```kotlin
-// Before: Hardcoded FLAG_IMMUTABLE (caused issues on older Android versions)
-PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-
-// After: Version-aware flag selection
+// Before: FLAG_IMMUTABLE only for Android 12+
 val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+} else {
+    PendingIntent.FLAG_UPDATE_CURRENT
+}
+
+// After: FLAG_IMMUTABLE for Android 6.0+ for better security
+// Required for Android 12+ but supported since Android 6.0 (API 23)
+val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
 } else {
     PendingIntent.FLAG_UPDATE_CURRENT
