@@ -48,6 +48,11 @@ export function AIActivitySuggestions({
     setIsLoading(true);
     
     try {
+      // Check if window.spark.llm is available
+      if (!window.spark?.llm) {
+        throw new Error('AI features are not available in this environment');
+      }
+
       const current = weatherData.current;
       const forecast = weatherData.daily[0];
       
@@ -80,6 +85,12 @@ ${language === 'pt' ? 'Provide activity names and reasons in Portuguese.' : 'Pro
       setRecommendations(parsed.activities || []);
     } catch (error) {
       console.error('Failed to generate activity recommendations:', error);
+      
+      // Show helpful error message
+      if (error instanceof Error && error.message.includes('not available')) {
+        console.warn('AI features not available - app must run in GitHub Spark environment');
+      }
+      
       setRecommendations([]);
     } finally {
       setIsLoading(false);
@@ -124,6 +135,11 @@ ${language === 'pt' ? 'Provide activity names and reasons in Portuguese.' : 'Pro
               {language === 'pt' 
                 ? 'Clique no botão acima para obter sugestões personalizadas de atividades'
                 : 'Click the button above to get personalized activity suggestions'}
+            </p>
+            <p className="text-xs text-muted-foreground/70">
+              {language === 'pt'
+                ? 'Nota: Este recurso requer que o aplicativo seja executado no GitHub Spark'
+                : 'Note: This feature requires the app to run in GitHub Spark'}
             </p>
           </motion.div>
         )}

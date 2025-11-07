@@ -54,6 +54,11 @@ export function AIWeatherChat({
     setIsLoading(true);
 
     try {
+      // Check if window.spark.llm is available
+      if (!window.spark?.llm) {
+        throw new Error('AI features are not available in this environment');
+      }
+
       const current = weatherData.current;
       const forecast = weatherData.daily.slice(0, 5);
       
@@ -94,12 +99,19 @@ Provide a helpful, concise answer (2-3 sentences max). ${language === 'pt' ? 'Re
       setMessages((current = []) => [...current, assistantMessage]);
     } catch (error) {
       console.error('Failed to get chat response:', error);
+      
+      const errorContent = error instanceof Error && error.message.includes('not available')
+        ? (language === 'pt'
+          ? 'Os recursos de IA não estão disponíveis neste ambiente. Esta funcionalidade requer que o aplicativo seja executado no GitHub Spark.'
+          : 'AI features are not available in this environment. This feature requires the app to run in GitHub Spark.')
+        : (language === 'pt' 
+          ? 'Desculpe, não consegui processar sua pergunta. Tente novamente.'
+          : 'Sorry, I couldn\'t process your question. Please try again.');
+      
       const errorMessage: Message = {
         id: `${Date.now()}-error`,
         role: 'assistant',
-        content: language === 'pt' 
-          ? 'Desculpe, não consegui processar sua pergunta. Tente novamente.'
-          : 'Sorry, I couldn\'t process your question. Please try again.',
+        content: errorContent,
         timestamp: Date.now(),
       };
       setMessages((current = []) => [...current, errorMessage]);
