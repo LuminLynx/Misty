@@ -2,6 +2,12 @@
 
 A comprehensive, modern weather dashboard web application built with React, TypeScript, and Tailwind CSS. Get real-time weather data, extended forecasts, and rich location selection features with an elegant, data-focused interface.
 
+## 🌐 Live Demo
+
+**Access the app at:** [https://luminlynx.github.io/Misty/](https://luminlynx.github.io/Misty/)
+
+> **Note:** The URL is case-sensitive. Make sure to use capital 'M' in 'Misty' for correct access.
+
 ## Features
 
 ### Current Weather Display
