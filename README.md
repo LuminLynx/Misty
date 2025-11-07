@@ -19,6 +19,27 @@ This app is a Progressive Web App (PWA) and can be installed on your device for 
 - **Android:** Tap menu (⋮) → "Install app" or "Add to Home screen"
 - **iOS:** Tap Share (⬆) → "Add to Home Screen"
 
+### 🤖 Android Widget
+
+In addition to the PWA, a native Android home screen widget is available!
+
+**For complete installation instructions, see:** [Android Widget Installation Guide](android/WIDGET_INSTALLATION_ANDROID15.md)
+
+**Features:**
+- Display weather directly on your home screen
+- Card-style design with gradient background
+- Auto-refresh every 30 minutes
+- Tap to manually refresh
+- Resizable widget (4×2 minimum)
+- Compatible with Android 8.0+ (API 26+)
+
+**Quick Install:**
+1. Build APK: `cd android && ./gradlew assembleDebug`
+2. Install APK on your Android device
+3. Long-press home screen → Widgets → "Misty Weather Widget"
+
+**Note:** The widget currently shows placeholder data. Weather API integration coming in future update.
+
 ## Features
 
 ### Current Weather Display

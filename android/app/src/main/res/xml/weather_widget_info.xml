@@ -13,6 +13,7 @@
     android:maxResizeHeight="450dp"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"
+    android:previewImage="@drawable/widget_background"
     android:previewLayout="@layout/weather_widget_layout"
     android:widgetFeatures="reconfigurable|configuration_optional">
 </appwidget-provider>
