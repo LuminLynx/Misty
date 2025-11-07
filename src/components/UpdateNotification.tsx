@@ -70,8 +70,14 @@ export function UpdateNotification() {
       // Tell the service worker to skip waiting
       registration.waiting.postMessage({ type: 'SKIP_WAITING' });
       
-      // Reload the page to activate the new service worker
-      window.location.reload();
+      // Listen for the controlling service worker change
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      });
     }
   };
 
