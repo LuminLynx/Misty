@@ -131,15 +131,10 @@ ${language === 'pt' ? 'Provide activity names and reasons in Portuguese.' : 'Pro
             exit={{ opacity: 0 }}
             className="text-center py-8"
           >
-            <p className="text-muted-foreground text-sm mb-4">
+            <p className="text-muted-foreground text-sm mb-2">
               {language === 'pt' 
                 ? 'Clique no botão acima para obter sugestões personalizadas de atividades'
                 : 'Click the button above to get personalized activity suggestions'}
-            </p>
-            <p className="text-xs text-muted-foreground/70">
-              {language === 'pt'
-                ? 'Nota: Este recurso requer que o aplicativo seja executado no GitHub Spark'
-                : 'Note: This feature requires the app to run in GitHub Spark'}
             </p>
           </motion.div>
         )}
