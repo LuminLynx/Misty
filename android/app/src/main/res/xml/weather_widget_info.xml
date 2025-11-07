@@ -4,10 +4,15 @@
     android:initialLayout="@layout/weather_widget_layout"
     android:minWidth="250dp"
     android:minHeight="120dp"
+    android:minResizeWidth="180dp"
+    android:minResizeHeight="110dp"
     android:resizeMode="horizontal|vertical"
     android:targetCellWidth="4"
     android:targetCellHeight="2"
+    android:maxResizeWidth="420dp"
+    android:maxResizeHeight="450dp"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"
-    android:previewLayout="@layout/weather_widget_layout">
+    android:previewLayout="@layout/weather_widget_layout"
+    android:widgetFeatures="reconfigurable|configuration_optional">
 </appwidget-provider>

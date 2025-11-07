@@ -22,6 +22,11 @@ export function AIInsights({ weatherData, locationName, unit, language }: AIInsi
     setIsLoading(true);
     
     try {
+      // Check if window.spark.llm is available
+      if (!window.spark?.llm) {
+        throw new Error('AI features are not available in this environment');
+      }
+
       const current = weatherData.current;
       const forecast = weatherData.daily.slice(0, 3);
       
@@ -65,10 +70,14 @@ Keep it conversational, friendly, and practical. ${language === 'pt' ? 'Respond 
       setInsights(response.trim());
     } catch (error) {
       console.error('Failed to generate AI insights:', error);
-      setInsights(language === 'pt' 
-        ? 'Não foi possível gerar insights neste momento. Tente novamente.'
-        : 'Unable to generate insights at this time. Please try again.'
-      );
+      const errorMessage = error instanceof Error && error.message.includes('not available')
+        ? (language === 'pt'
+          ? 'Os recursos de IA não estão disponíveis neste ambiente. Esta funcionalidade requer que o aplicativo seja executado no GitHub Spark.'
+          : 'AI features are not available in this environment. This feature requires the app to run in GitHub Spark.')
+        : (language === 'pt' 
+          ? 'Não foi possível gerar insights neste momento. Tente novamente.'
+          : 'Unable to generate insights at this time. Please try again.');
+      setInsights(errorMessage);
     } finally {
       setIsLoading(false);
     }
