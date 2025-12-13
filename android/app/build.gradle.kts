@@ -9,7 +9,15 @@ android {
 
     defaultConfig {
         applicationId = "com.luminlynx.misty"
-        minSdk = 31 // Android 12 for modern widget features
+        // NOTE: minSdk 31 (Android 12) is required for modern widget features:
+        // - Jetpack Glance requires API 31+
+        // - Material 3 dynamic colors
+        // - Improved WorkManager behavior
+        // Trade-off: Excludes Android 8-11 devices (~20-30% market share)
+        // Consider: If broader compatibility is needed, you can:
+        // 1. Create a separate widget using traditional RemoteViews for older devices
+        // 2. Use Glance with compatibility fallbacks
+        minSdk = 31 // Android 12
         targetSdk = 35 // Android 15
         versionCode = 1
         versionName = "1.0"

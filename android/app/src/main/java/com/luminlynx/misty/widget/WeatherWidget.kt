@@ -132,9 +132,16 @@ private fun WeatherWidgetContent(
                     modifier = GlanceModifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Weather icon
+                    // Weather icon - dynamically selected based on condition code
+                    val iconResId = context.resources.getIdentifier(
+                        weatherData.getWeatherIconName(),
+                        "drawable",
+                        context.packageName
+                    )
                     Image(
-                        provider = ImageProvider(R.drawable.ic_weather_placeholder),
+                        provider = ImageProvider(
+                            if (iconResId != 0) iconResId else R.drawable.ic_weather_placeholder
+                        ),
                         contentDescription = weatherData.condition,
                         modifier = GlanceModifier.size(48.dp)
                     )
@@ -299,12 +306,30 @@ private fun getFontSize(sizePreference: String, baseSizeSp: Int): androidx.compo
 
 /**
  * Placeholder MainActivity for widget click action
- * In production, this would be the actual main app activity
+ * 
+ * IMPORTANT: This is a placeholder that should be replaced with your actual main app activity.
+ * 
+ * To integrate with your main app:
+ * 1. Replace the clickable action in WeatherWidgetContent:
+ *    .clickable(actionStartActivity<YourMainActivity>())
+ * 
+ * 2. Or handle deep links to specific screens:
+ *    .clickable(
+ *        actionStartActivity(
+ *            Intent(context, YourMainActivity::class.java).apply {
+ *                action = "com.luminlynx.misty.OPEN_WEATHER"
+ *                putExtra("LOCATION", weatherData.location)
+ *            }
+ *        )
+ *    )
+ * 
+ * See WIDGET_INTEGRATION_GUIDE.md for detailed integration instructions.
  */
 class MainActivity : android.app.Activity() {
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
-        // This is a placeholder - in production this would launch the main weather app
+        // TODO: Replace with actual main app launch intent
+        // For now, just finish to avoid showing empty activity
         finish()
     }
 }
