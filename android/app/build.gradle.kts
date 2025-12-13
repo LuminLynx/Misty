@@ -54,12 +54,18 @@ android {
 }
 
 dependencies {
+    // Capacitor - Web to Native bridge
+    implementation("com.capacitorjs:core:7.0.0")
+    
     // AndroidX Core
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     
     // Material Design for Android 15
     implementation("com.google.android.material:material:1.12.0")
+    
+    // WebView for Capacitor
+    implementation("androidx.webkit:webkit:1.11.0")
     
     // Jetpack Compose
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))

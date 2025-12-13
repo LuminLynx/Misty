@@ -8,9 +8,12 @@ import { resolve } from 'path'
 
 const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 
+// Use /Misty/ for GitHub Pages, / for Capacitor builds
+const base = process.env.CAPACITOR ? '/' : '/Misty/';
+
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Misty/',
+  base,
   plugins: [
     react(),
     tailwindcss(),
