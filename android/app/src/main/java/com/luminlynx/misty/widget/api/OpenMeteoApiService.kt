@@ -24,23 +24,6 @@ interface OpenMeteoApiService {
 }
 
 /**
- * Geocoding API service
- */
-interface GeocodingApiService {
-    
-    /**
-     * Search for location by name
-     */
-    @GET("v1/search")
-    suspend fun searchLocation(
-        @Query("name") name: String,
-        @Query("count") count: Int = 1,
-        @Query("language") language: String = "en",
-        @Query("format") format: String = "json"
-    ): GeocodingResponse
-}
-
-/**
  * Response model for weather forecast
  */
 data class WeatherForecastResponse(
@@ -76,21 +59,4 @@ data class DailyWeatherResponse(
     val uv_index_max: List<Double>
 )
 
-/**
- * Geocoding response for location search
- */
-data class GeocodingResponse(
-    val results: List<GeocodingResult>?
-)
 
-/**
- * Individual geocoding result
- */
-data class GeocodingResult(
-    val id: Int,
-    val name: String,
-    val latitude: Double,
-    val longitude: Double,
-    val country: String?,
-    val admin1: String?
-)

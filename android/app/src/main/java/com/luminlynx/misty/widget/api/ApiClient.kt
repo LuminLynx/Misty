@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
 
     private const val WEATHER_BASE_URL = "https://api.open-meteo.com/"
-    private const val GEOCODING_BASE_URL = "https://geocoding-api.open-meteo.com/"
     private const val CONNECT_TIMEOUT = 10L
     private const val READ_TIMEOUT = 30L
     private const val WRITE_TIMEOUT = 15L
@@ -49,12 +48,5 @@ object ApiClient {
      */
     val weatherApi: OpenMeteoApiService by lazy {
         createRetrofit(WEATHER_BASE_URL).create(OpenMeteoApiService::class.java)
-    }
-
-    /**
-     * Geocoding API service instance
-     */
-    val geocodingApi: GeocodingApiService by lazy {
-        createRetrofit(GEOCODING_BASE_URL).create(GeocodingApiService::class.java)
     }
 }

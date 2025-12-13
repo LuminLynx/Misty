@@ -116,22 +116,9 @@ class WeatherWidgetRepository(private val context: Context) {
         // Fetch weather forecast
         val weatherResponse = ApiClient.weatherApi.getWeatherForecast(lat, lon)
         
-        // Get location name from geocoding API
-        val locationName = try {
-            val geocodingResponse = ApiClient.geocodingApi.searchLocation(
-                name = "${lat},${lon}",
-                count = 1
-            )
-            geocodingResponse.results?.firstOrNull()?.let { result ->
-                buildString {
-                    append(result.name)
-                    result.admin1?.let { admin -> append(", $admin") }
-                }
-            } ?: "${lat.format(2)}°, ${lon.format(2)}°"
-        } catch (e: Exception) {
-            Log.w(TAG, "Failed to fetch location name, using coordinates", e)
-            "${lat.format(2)}°, ${lon.format(2)}°"
-        }
+        // Use coordinates as location name
+        // In future, location name can be stored in widget preferences during configuration
+        val locationName = "${lat.format(2)}°, ${lon.format(2)}°"
         
         // Parse sunrise/sunset times
         val sunriseTime = parseIsoDateTime(weatherResponse.daily.sunrise[0])
