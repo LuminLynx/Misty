@@ -26,6 +26,9 @@ class WeatherWidgetRepository(private val context: Context) {
         private const val CACHE_VALIDITY_MS = 30 * 60 * 1000L // 30 minutes default
         private const val MAX_RETRY_ATTEMPTS = 3
         private const val INITIAL_BACKOFF_MS = 1000L
+        
+        // Cached SimpleDateFormat for performance (not thread-safe but used in single coroutine context)
+        private val ISO_DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
     }
 
     private val gson = Gson()
@@ -205,8 +208,7 @@ class WeatherWidgetRepository(private val context: Context) {
      */
     private fun parseIsoDateTime(isoDateTime: String): Long {
         return try {
-            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
-            format.parse(isoDateTime)?.time ?: System.currentTimeMillis()
+            ISO_DATE_FORMAT.parse(isoDateTime)?.time ?: System.currentTimeMillis()
         } catch (e: Exception) {
             Log.w(TAG, "Failed to parse date-time: $isoDateTime", e)
             System.currentTimeMillis()
