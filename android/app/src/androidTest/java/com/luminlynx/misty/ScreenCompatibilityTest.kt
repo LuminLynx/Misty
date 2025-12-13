@@ -55,7 +55,7 @@ class ScreenCompatibilityTest {
         
         // Check if density is close to any supported density (within 20% tolerance)
         val hasMatchingDensity = supportedDensities.any { supportedDensity ->
-            val difference = Math.abs(density - supportedDensity).toFloat()
+            val difference = kotlin.math.abs(density - supportedDensity).toFloat()
             val tolerance = supportedDensity * 0.2f
             difference <= tolerance
         }

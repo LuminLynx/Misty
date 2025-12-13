@@ -18,6 +18,14 @@ import kotlin.system.measureTimeMillis
 @RunWith(AndroidJUnit4::class)
 class PerformanceTest {
 
+    companion object {
+        private const val MAX_LAUNCH_TIME_MS = 5000L
+        private const val MAX_MEMORY_MB = 100
+        private const val BYTES_PER_MB = 1024 * 1024
+        private const val MAX_RECREATION_TIME_MS = 2000L
+        private const val MAX_COLD_START_TIME_MS = 10000L
+    }
+
     private lateinit var context: Context
 
     @Before
@@ -37,9 +45,9 @@ class PerformanceTest {
             }
         }
         
-        // Activity should launch within 5 seconds even on older devices
+        // Activity should launch within reasonable time even on older devices
         assertTrue("Activity launch time should be reasonable: ${launchTime}ms", 
-            launchTime < 5000)
+            launchTime < MAX_LAUNCH_TIME_MS)
     }
 
     @Test
@@ -67,9 +75,9 @@ class PerformanceTest {
             val afterLaunchMemory = runtime.totalMemory() - runtime.freeMemory()
             val memoryIncrease = afterLaunchMemory - initialMemory
             
-            // Memory increase should be reasonable (less than 100MB)
-            assertTrue("Memory increase should be reasonable: ${memoryIncrease / 1024 / 1024}MB",
-                memoryIncrease < 100 * 1024 * 1024)
+            // Memory increase should be reasonable
+            assertTrue("Memory increase should be reasonable: ${memoryIncrease / BYTES_PER_MB}MB",
+                memoryIncrease < MAX_MEMORY_MB * BYTES_PER_MB)
         }
     }
 
@@ -120,7 +128,7 @@ class PerformanceTest {
             
             // Recreation should be fast
             assertTrue("Activity recreation should be fast: ${recreationTime}ms",
-                recreationTime < 2000)
+                recreationTime < MAX_RECREATION_TIME_MS)
         }
     }
 
@@ -148,8 +156,8 @@ class PerformanceTest {
             scenario.close()
         }
         
-        // Cold start should complete within 10 seconds
+        // Cold start should complete in reasonable time
         assertTrue("Cold start should complete in reasonable time: ${coldStartTime}ms",
-            coldStartTime < 10000)
+            coldStartTime < MAX_COLD_START_TIME_MS)
     }
 }
