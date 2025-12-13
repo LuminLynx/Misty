@@ -1,6 +1,6 @@
 # Weather Dashboard
 
-A comprehensive, modern weather dashboard web application built with React, TypeScript, and Tailwind CSS. Get real-time weather data, extended forecasts, and rich location selection features with an elegant, data-focused interface.
+A comprehensive, modern weather dashboard available as both a web application and native Android 15 app. Built with React, TypeScript, and Tailwind CSS for the web layer, and Capacitor + Jetpack Compose for the native Android experience. Get real-time weather data, extended forecasts, and rich location selection features with an elegant, data-focused interface.
 
 ## 🌐 Live Demo
 
@@ -8,9 +8,11 @@ A comprehensive, modern weather dashboard web application built with React, Type
 
 > **Note:** The URL is case-sensitive. Make sure to use capital 'M' in 'Misty' for correct access.
 
-### 📱 PWA Installation
+### 📱 Installation Options
 
-This app is a Progressive Web App (PWA) and can be installed on your device for a native app-like experience!
+#### PWA (Progressive Web App)
+
+Install the PWA on any device for an app-like experience!
 
 **For detailed installation instructions and troubleshooting, see:** [PWA Installation Guide](PWA_INSTALLATION_GUIDE.md)
 
@@ -18,6 +20,19 @@ This app is a Progressive Web App (PWA) and can be installed on your device for 
 - **Desktop:** Look for the install icon (⊕) in your browser's address bar
 - **Android:** Tap menu (⋮) → "Install app" or "Add to Home screen"
 - **iOS:** Tap Share (⬆) → "Add to Home Screen"
+
+#### 🤖 Native Android App
+
+Get the full native Android 15 experience with Capacitor!
+
+**Features:**
+- Native app performance with WebView
+- Home screen weather widget (Jetpack Glance)
+- Better integration with Android system
+- Offline capabilities
+- Native permissions handling
+
+**For Android build instructions, see:** [Capacitor Android Guide](CAPACITOR_ANDROID_GUIDE.md)
 
 ## Features
 
@@ -84,6 +99,7 @@ Weather data is cached for 10 minutes to improve performance and respect API usa
 
 ## Technology Stack
 
+### Web Layer
 - **React 19** - UI library
 - **TypeScript** - Type safety
 - **Tailwind CSS v4** - Styling
@@ -92,6 +108,15 @@ Weather data is cached for 10 minutes to improve performance and respect API usa
 - **Phosphor Icons** - Icon library
 - **Sonner** - Toast notifications
 - **Vite** - Build tool
+
+### Native Android (Optional)
+- **Capacitor 7** - Web-to-native bridge
+- **Kotlin 2.0** - Android development language
+- **Jetpack Glance** - Modern widget framework
+- **Jetpack Compose** - UI toolkit
+- **WorkManager** - Background tasks
+- **DataStore** - Settings persistence
+- **Android 15 (API 35)** - Target platform
 
 ## Project Structure
 
