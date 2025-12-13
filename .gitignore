@@ -33,3 +33,9 @@ pids
 
 .spark-workbench-id
 android_widget_backup/
+
+# Android keystore files
+*.keystore
+*.jks
+*.keystore.base64
+release.keystore
