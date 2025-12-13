@@ -19,11 +19,12 @@ import kotlin.system.measureTimeMillis
 class PerformanceTest {
 
     companion object {
-        private const val MAX_LAUNCH_TIME_MS = 5000L
-        private const val MAX_MEMORY_MB = 100
+        // Performance thresholds chosen to ensure good UX even on older devices (API 23+)
+        private const val MAX_LAUNCH_TIME_MS = 5000L // Activity should launch within 5 seconds
+        private const val MAX_MEMORY_MB = 100 // Memory footprint should stay under 100MB
         private const val BYTES_PER_MB = 1024 * 1024
-        private const val MAX_RECREATION_TIME_MS = 2000L
-        private const val MAX_COLD_START_TIME_MS = 10000L
+        private const val MAX_RECREATION_TIME_MS = 2000L // Config changes (rotation) should be fast
+        private const val MAX_COLD_START_TIME_MS = 10000L // First launch can take longer
     }
 
     private lateinit var context: Context
