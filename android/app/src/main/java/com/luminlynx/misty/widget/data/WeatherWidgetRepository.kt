@@ -5,9 +5,12 @@ import android.util.Log
 import com.luminlynx.misty.widget.model.WeatherData
 import com.luminlynx.misty.widget.model.HourlyForecast
 import com.luminlynx.misty.widget.model.DailyForecast
+import com.luminlynx.misty.widget.api.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
@@ -98,46 +101,168 @@ class WeatherWidgetRepository(private val context: Context) {
     }
 
     /**
-     * Fetch weather data from API (mock implementation)
-     * In production, this would use Retrofit to call Open-Meteo API
+     * Fetch weather data from Open-Meteo API
      */
     private suspend fun fetchWeatherDataFromApi(
         latitude: String,
         longitude: String,
         isMetric: Boolean
     ): WeatherData {
-        // Mock implementation - returns sample data
-        // TODO: In production, integrate with Open-Meteo API
-        // Example API call:
-        // val response = weatherApi.getCurrentWeather(latitude, longitude)
-        // return response.toWeatherData()
-        //
-        // This mock implementation is intentional for the initial widget release.
-        // The main Capacitor app uses the real Open-Meteo API via web layer.
-        // Future enhancement: Share weather data between app and widget.
+        Log.d(TAG, "Fetching weather data from Open-Meteo API for lat=$latitude, lon=$longitude")
         
-        Log.d(TAG, "Fetching weather data for lat=$latitude, lon=$longitude (using mock data)")
+        val lat = latitude.toDouble()
+        val lon = longitude.toDouble()
         
-        // Simulate network delay
-        kotlinx.coroutines.delay(500)
+        // Fetch weather forecast
+        val weatherResponse = ApiClient.weatherApi.getWeatherForecast(lat, lon)
         
-        // Return mock data for widget demonstration
+        // Use coordinates as location name
+        // In future, location name can be stored in widget preferences during configuration
+        val locationName = "${lat.format(2)}°, ${lon.format(2)}°"
+        
+        // Parse sunrise/sunset times
+        val sunriseTime = parseIsoDateTime(weatherResponse.daily.sunrise[0])
+        val sunsetTime = parseIsoDateTime(weatherResponse.daily.sunset[0])
+        
+        // Convert temperature to Fahrenheit if needed
+        val temperature = if (isMetric) {
+            weatherResponse.current.temperature_2m
+        } else {
+            celsiusToFahrenheit(weatherResponse.current.temperature_2m)
+        }
+        
+        val feelsLike = if (isMetric) {
+            weatherResponse.current.apparent_temperature
+        } else {
+            celsiusToFahrenheit(weatherResponse.current.apparent_temperature)
+        }
+        
+        val highTemp = if (isMetric) {
+            weatherResponse.daily.temperature_2m_max[0]
+        } else {
+            celsiusToFahrenheit(weatherResponse.daily.temperature_2m_max[0])
+        }
+        
+        val lowTemp = if (isMetric) {
+            weatherResponse.daily.temperature_2m_min[0]
+        } else {
+            celsiusToFahrenheit(weatherResponse.daily.temperature_2m_min[0])
+        }
+        
+        // Convert wind speed to mph if needed (API returns km/h)
+        val windSpeed = if (isMetric) {
+            weatherResponse.current.wind_speed_10m
+        } else {
+            kmhToMph(weatherResponse.current.wind_speed_10m)
+        }
+        
+        // Get weather condition description
+        val condition = getWeatherConditionDescription(weatherResponse.current.weather_code)
+        
+        Log.d(TAG, "Successfully fetched weather data from Open-Meteo API")
+        
         return WeatherData(
-            location = "San Francisco",
-            temperature = if (isMetric) 22.0 else 72.0,
-            feelsLike = if (isMetric) 20.0 else 68.0,
-            condition = "Partly Cloudy",
-            conditionCode = 2,
-            humidity = 65,
-            windSpeed = if (isMetric) 15.0 else 9.0,
-            highTemp = if (isMetric) 25.0 else 77.0,
-            lowTemp = if (isMetric) 18.0 else 64.0,
-            uvIndex = 6,
-            sunrise = System.currentTimeMillis() - 6 * 3600 * 1000,
-            sunset = System.currentTimeMillis() + 6 * 3600 * 1000,
+            location = locationName,
+            temperature = temperature,
+            feelsLike = feelsLike,
+            condition = condition,
+            conditionCode = weatherResponse.current.weather_code,
+            humidity = weatherResponse.current.relative_humidity_2m,
+            windSpeed = windSpeed,
+            highTemp = highTemp,
+            lowTemp = lowTemp,
+            uvIndex = weatherResponse.daily.uv_index_max[0].toInt(),
+            sunrise = sunriseTime,
+            sunset = sunsetTime,
             lastUpdate = System.currentTimeMillis(),
             isMetric = isMetric
         )
+    }
+    
+    /**
+     * Convert Celsius to Fahrenheit
+     */
+    private fun celsiusToFahrenheit(celsius: Double): Double {
+        return celsius * 9.0 / 5.0 + 32.0
+    }
+    
+    /**
+     * Convert km/h to mph
+     */
+    private fun kmhToMph(kmh: Double): Double {
+        return kmh * 0.621371
+    }
+    
+    /**
+     * Format double to specified decimal places
+     */
+    private fun Double.format(decimals: Int): String {
+        return "%.${decimals}f".format(this)
+    }
+    
+    /**
+     * Parse ISO 8601 date-time string to timestamp
+     * Handles multiple ISO 8601 format variants from Open-Meteo API
+     */
+    private fun parseIsoDateTime(isoDateTime: String): Long {
+        return try {
+            // Try common ISO 8601 formats that Open-Meteo API might return
+            val formats = listOf(
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US),
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US),
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US),
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+            )
+            
+            for (format in formats) {
+                try {
+                    return format.parse(isoDateTime)?.time ?: continue
+                } catch (e: Exception) {
+                    // Try next format
+                    continue
+                }
+            }
+            
+            // If all formats fail, log and return current time
+            Log.w(TAG, "Failed to parse date-time with any format: $isoDateTime")
+            System.currentTimeMillis()
+        } catch (e: Exception) {
+            Log.w(TAG, "Error parsing date-time: $isoDateTime", e)
+            System.currentTimeMillis()
+        }
+    }
+    
+    /**
+     * Get human-readable weather condition description from WMO code
+     * WMO Weather interpretation codes (WW)
+     */
+    private fun getWeatherConditionDescription(code: Int): String {
+        return when (code) {
+            0 -> "Clear sky"
+            1 -> "Mainly clear"
+            2 -> "Partly cloudy"
+            3 -> "Overcast"
+            45, 48 -> "Foggy"
+            51 -> "Light drizzle"
+            53 -> "Moderate drizzle"
+            55 -> "Dense drizzle"
+            61 -> "Slight rain"
+            63 -> "Moderate rain"
+            65 -> "Heavy rain"
+            66, 67 -> "Freezing rain"
+            71 -> "Slight snow"
+            73 -> "Moderate snow"
+            75 -> "Heavy snow"
+            77 -> "Snow grains"
+            80 -> "Slight rain showers"
+            81 -> "Moderate rain showers"
+            82 -> "Violent rain showers"
+            85 -> "Slight snow showers"
+            86 -> "Heavy snow showers"
+            95 -> "Thunderstorm"
+            96, 99 -> "Thunderstorm with hail"
+            else -> "Unknown"
+        }
     }
 
     /**
