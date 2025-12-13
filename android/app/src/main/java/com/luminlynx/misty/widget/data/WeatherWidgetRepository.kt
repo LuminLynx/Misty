@@ -26,9 +26,6 @@ class WeatherWidgetRepository(private val context: Context) {
         private const val CACHE_VALIDITY_MS = 30 * 60 * 1000L // 30 minutes default
         private const val MAX_RETRY_ATTEMPTS = 3
         private const val INITIAL_BACKOFF_MS = 1000L
-        
-        // Cached SimpleDateFormat for performance (not thread-safe but used in single coroutine context)
-        private val ISO_DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
     }
 
     private val gson = Gson()
@@ -205,12 +202,32 @@ class WeatherWidgetRepository(private val context: Context) {
     
     /**
      * Parse ISO 8601 date-time string to timestamp
+     * Handles multiple ISO 8601 format variants from Open-Meteo API
      */
     private fun parseIsoDateTime(isoDateTime: String): Long {
         return try {
-            ISO_DATE_FORMAT.parse(isoDateTime)?.time ?: System.currentTimeMillis()
+            // Try common ISO 8601 formats that Open-Meteo API might return
+            val formats = listOf(
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US),
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US),
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US),
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+            )
+            
+            for (format in formats) {
+                try {
+                    return format.parse(isoDateTime)?.time ?: continue
+                } catch (e: Exception) {
+                    // Try next format
+                    continue
+                }
+            }
+            
+            // If all formats fail, log and return current time
+            Log.w(TAG, "Failed to parse date-time with any format: $isoDateTime")
+            System.currentTimeMillis()
         } catch (e: Exception) {
-            Log.w(TAG, "Failed to parse date-time: $isoDateTime", e)
+            Log.w(TAG, "Error parsing date-time: $isoDateTime", e)
             System.currentTimeMillis()
         }
     }
