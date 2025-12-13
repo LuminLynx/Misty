@@ -1,0 +1,9 @@
+{
+	"appId": "com.luminlynx.misty",
+	"appName": "Misty",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https"
+	},
+	"android": {}
+}

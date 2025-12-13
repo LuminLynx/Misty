@@ -7,11 +7,17 @@
         "dev": "vite",
         "kill": "fuser -k 5000/tcp",
         "build": "tsc -b --noCheck && vite build",
+        "build:capacitor": "CAPACITOR=true npm run build && npx cap copy android",
         "lint": "eslint .",
         "optimize": "vite optimize",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "android:sync": "npx cap sync android",
+        "android:open": "npx cap open android"
     },
     "dependencies": {
+        "@capacitor/android": "^7.4.4",
+        "@capacitor/cli": "^7.4.4",
+        "@capacitor/core": "^7.4.4",
         "@github/spark": "^0.39.0",
         "@heroicons/react": "^2.2.0",
         "@hookform/resolvers": "^4.1.3",

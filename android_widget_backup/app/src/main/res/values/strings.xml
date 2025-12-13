@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Misty Weather Widget</string>
+    <string name="widget_description">Display current weather conditions on your home screen</string>
+    <string name="widget_loading">Loading weather data...</string>
+    <string name="widget_error">Unable to load weather</string>
+    <string name="widget_tap_to_refresh">Tap to refresh</string>
+    <string name="widget_tap_to_configure">Tap to configure</string>
+    <string name="widget_default_location">Your Location</string>
+    <string name="widget_default_temperature">--°</string>
+    <string name="widget_default_condition">Loading...</string>
+    <string name="widget_default_feels_like">Feels like --°</string>
+    <string name="widget_default_humidity">Humidity: --%</string>
+    <string name="widget_default_wind">Wind: -- km/h</string>
+    
+    <!-- Configuration Activity -->
+    <string name="config_title">Configure Weather Widget</string>
+    <string name="config_theme">Theme</string>
+    <string name="config_color_scheme">Color Scheme</string>
+    <string name="config_temperature_unit">Temperature Unit</string>
+    <string name="config_font_size">Font Size</string>
+    <string name="config_update_frequency">Update Frequency</string>
+    <string name="config_transparency">Transparency</string>
+    <string name="config_display_options">Display Options</string>
+    <string name="config_feels_like">Feels Like</string>
+    <string name="config_humidity">Humidity</string>
+    <string name="config_wind_speed">Wind Speed</string>
+    <string name="config_uv_index">UV Index</string>
+    <string name="config_sunrise_sunset">Sunrise/Sunset</string>
+    <string name="config_save">Save</string>
+    <string name="config_cancel">Cancel</string>
+    
+    <!-- Theme options -->
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_auto">Auto</string>
+    
+    <!-- Color schemes -->
+    <string name="color_blue">Blue</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_green">Green</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_pink">Pink</string>
+    
+    <!-- Temperature units -->
+    <string name="unit_celsius">Celsius</string>
+    <string name="unit_fahrenheit">Fahrenheit</string>
+    
+    <!-- Font sizes -->
+    <string name="font_small">Small</string>
+    <string name="font_medium">Medium</string>
+    <string name="font_large">Large</string>
+    
+    <!-- Update frequencies -->
+    <string name="update_15min">15 min</string>
+    <string name="update_30min">30 min</string>
+    <string name="update_1hr">1 hr</string>
+    <string name="update_3hr">3 hr</string>
+    
+    <!-- Weather conditions (WMO codes) -->
+    <string name="weather_clear_sky">Clear Sky</string>
+    <string name="weather_partly_cloudy">Partly Cloudy</string>
+    <string name="weather_overcast">Overcast</string>
+    <string name="weather_fog">Fog</string>
+    <string name="weather_drizzle">Drizzle</string>
+    <string name="weather_rain">Rain</string>
+    <string name="weather_freezing_rain">Freezing Rain</string>
+    <string name="weather_snow">Snow</string>
+    <string name="weather_snow_grains">Snow Grains</string>
+    <string name="weather_rain_showers">Rain Showers</string>
+    <string name="weather_snow_showers">Snow Showers</string>
+    <string name="weather_thunderstorm">Thunderstorm</string>
+    <string name="weather_thunderstorm_hail">Severe Thunderstorm</string>
+</resources>
