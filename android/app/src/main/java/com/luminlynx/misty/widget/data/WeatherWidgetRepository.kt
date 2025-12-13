@@ -107,14 +107,21 @@ class WeatherWidgetRepository(private val context: Context) {
         isMetric: Boolean
     ): WeatherData {
         // Mock implementation - returns sample data
-        // In production, replace with actual API call
+        // TODO: In production, integrate with Open-Meteo API
+        // Example API call:
+        // val response = weatherApi.getCurrentWeather(latitude, longitude)
+        // return response.toWeatherData()
+        //
+        // This mock implementation is intentional for the initial widget release.
+        // The main Capacitor app uses the real Open-Meteo API via web layer.
+        // Future enhancement: Share weather data between app and widget.
         
-        Log.d(TAG, "Fetching weather data for lat=$latitude, lon=$longitude")
+        Log.d(TAG, "Fetching weather data for lat=$latitude, lon=$longitude (using mock data)")
         
         // Simulate network delay
         kotlinx.coroutines.delay(500)
         
-        // Return mock data
+        // Return mock data for widget demonstration
         return WeatherData(
             location = "San Francisco",
             temperature = if (isMetric) 22.0 else 72.0,

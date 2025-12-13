@@ -6,16 +6,9 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     androidScheme: 'https'
-  },
-  android: {
-    buildOptions: {
-      keystorePath: undefined,
-      keystorePassword: undefined,
-      keystoreAlias: undefined,
-      keystoreAliasPassword: undefined,
-      releaseType: 'APK'
-    }
   }
+  // Android build options should be configured in android/app/build.gradle
+  // Keystore configuration for release builds should use environment variables
 };
 
 export default config;

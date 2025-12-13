@@ -11,7 +11,13 @@ import "./index.css"
 
 // Register service worker for PWA functionality
 // Skip service worker registration in Capacitor (native app)
-if ('serviceWorker' in navigator && !(window as any).Capacitor) {
+declare global {
+  interface Window {
+    Capacitor?: unknown;
+  }
+}
+
+if ('serviceWorker' in navigator && !window.Capacitor) {
   window.addEventListener('load', () => {
     // Use different paths for GitHub Pages vs local dev
     const swPath = import.meta.env.BASE_URL === '/Misty/' ? '/Misty/sw.js' : '/sw.js';
