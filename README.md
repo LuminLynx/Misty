@@ -229,6 +229,23 @@ Example for adding "Feels Like" separately:
 - Geolocation API support
 - Local Storage API
 
+## CI/CD & Testing
+
+The project includes comprehensive CI/CD pipelines for automated testing and builds:
+
+### Web Application
+- Automated deployment to GitHub Pages
+- Build verification on every push
+
+### Android Application
+- **Automated APK builds** (debug and release)
+- **Multi-device testing** across API levels 23, 31, and 35
+- **Instrumented tests** for core functionality, widgets, and UI
+- **Performance testing** for older devices
+- **Screen compatibility** testing for phones and tablets
+
+For details on Android CI/CD setup, see [Android CI Setup Guide](ANDROID_CI_SETUP.md)
+
 ## Future Enhancement Ideas
 
 - Hourly forecast view
