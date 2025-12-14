@@ -8,7 +8,6 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 /**
@@ -25,7 +24,6 @@ class WeatherWidgetRepositoryTest {
 
     @Before
     fun setup() {
-        MockitoAnnotations.openMocks(this)
         repository = WeatherWidgetRepository(context)
     }
 
