@@ -7,7 +7,8 @@ android {
   }
 }
 
-apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
+// Commented out: capacitor-cordova-android-plugins directory does not exist
+// apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
 
 
