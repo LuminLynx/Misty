@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Misty Weather Widget</string>
+    <string name="title_activity_main">Misty</string>
     <string name="widget_description">Display current weather conditions on your home screen</string>
     <string name="widget_loading">Loading weather data...</string>
     <string name="widget_error">Unable to load weather</string>
