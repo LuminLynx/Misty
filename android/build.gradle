@@ -2,6 +2,17 @@
 
 buildscript {
     ext.kotlin_version = '2.0.0'
+    ext {
+        compileSdkVersion = 34
+        minSdkVersion = 24
+        targetSdkVersion = 34
+        androidxAppCompatVersion = '1.6.1'
+        androidxCoordinatorLayoutVersion = '1.2.0'
+        coreSplashScreenVersion = '1.0.1'
+        junitVersion = '4.13.2'
+        androidxJunitVersion = '1.1.5'
+        androidxEspressoCoreVersion = '3.5.1'
+    }
     repositories {
         google()
         mavenCentral()
