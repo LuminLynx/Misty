@@ -51,7 +51,7 @@ jobs:
       - name: Build debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon --stacktrace --warning-mode all
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
@@ -111,10 +111,10 @@ jobs:
               -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
               -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
               -Pandroid.injected.signing.key.password="$KEY_PASSWORD" \
-              --no-daemon --stacktrace
+              --no-daemon --stacktrace --warning-mode all
           else
             echo "No keystore found, building unsigned release APK"
-            ./gradlew assembleRelease --no-daemon --stacktrace
+            ./gradlew assembleRelease --no-daemon --stacktrace --warning-mode all
           fi
 
       - name: Upload release APK
@@ -160,7 +160,7 @@ jobs:
       - name: Run unit tests
         run: |
           cd android
-          ./gradlew testDebugUnitTest --no-daemon --stacktrace
+          ./gradlew testDebugUnitTest --no-daemon --stacktrace --warning-mode all
 
       - name: Upload test results
         if: always()
@@ -231,7 +231,7 @@ jobs:
             -camera-back none
           script: |
             cd android
-            ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+            ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace --warning-mode all
 
       - name: Upload instrumented test results
         if: always()
