@@ -106,7 +106,9 @@ private fun WeatherWidgetContent(
             .fillMaxSize()
             .background(backgroundColor)
             .padding(16.dp)
-            .clickable(actionStartActivity<MainActivity>()),
+            .clickable(actionStartActivity(
+                Intent(context, MainActivity::class.java)
+            )),
         contentAlignment = Alignment.Center
     ) {
         if (weatherData != null) {
