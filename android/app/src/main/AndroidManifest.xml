@@ -38,7 +38,7 @@
         <activity
             android:name=".widget.config.WeatherWidgetConfigActivity"
             android:exported="true"
-            android:theme="@android:style/Theme.Material3.DayNight">
+            android:theme="@style/Theme.Material3.DayNight">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.lifecycle.lifecycleScope
 import com.luminlynx.misty.widget.WeatherWidget
 import com.luminlynx.misty.widget.WeatherWidgetWorker
@@ -68,8 +69,8 @@ class WeatherWidgetConfigActivity : ComponentActivity() {
     private fun saveConfiguration() {
         lifecycleScope.launch {
             // Update widget
-            val appWidgetManager = AppWidgetManager.getInstance(this@WeatherWidgetConfigActivity)
-            WeatherWidget().update(this@WeatherWidgetConfigActivity, appWidgetManager)
+            val glanceId = GlanceAppWidgetManager(this@WeatherWidgetConfigActivity).getGlanceIdBy(appWidgetId)
+            WeatherWidget().update(this@WeatherWidgetConfigActivity, glanceId)
 
             // Get update frequency and schedule worker
             val config = preferences.widgetConfig.first()
