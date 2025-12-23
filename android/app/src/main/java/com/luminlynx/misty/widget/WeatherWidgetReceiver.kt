@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,10 +34,13 @@ class WeatherWidgetReceiver : GlanceAppWidgetReceiver() {
             // This method is called from WorkManager to trigger updates
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             scope.launch {
+                val glanceManager = GlanceAppWidgetManager(context)
+                val weatherWidget = WeatherWidget()
                 appWidgetIds.forEach { widgetId ->
                     try {
-                        // Glance will handle the update through the WeatherWidget instance
-                        WeatherWidget().update(context, AppWidgetManager.getInstance(context))
+                        // Get GlanceId for this widget and update
+                        val glanceId = glanceManager.getGlanceIdBy(widgetId)
+                        weatherWidget.update(context, glanceId)
                     } catch (e: Exception) {
                         Log.e(TAG, "Error updating widget $widgetId", e)
                     }

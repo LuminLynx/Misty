@@ -3,9 +3,9 @@
 buildscript {
     ext.kotlin_version = '2.0.0'
     ext {
-        compileSdkVersion = 34
+        compileSdkVersion = 35
         minSdkVersion = 24
-        targetSdkVersion = 34
+        targetSdkVersion = 35
         androidxAppCompatVersion = '1.6.1'
         androidxCoordinatorLayoutVersion = '1.2.0'
         coreSplashScreenVersion = '1.0.1'
@@ -18,7 +18,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath 'com.android.tools.build:gradle:8.7.3'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0'
         classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.0.0'
         // NOTE: Do not place your application dependencies here; they belong
